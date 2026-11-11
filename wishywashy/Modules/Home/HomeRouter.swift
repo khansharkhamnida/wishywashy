@@ -37,7 +37,11 @@ final class HomeRouter: HomeRouterProtocol {
     func navigateToReserve(machineId: String, onReserved: @escaping () -> Void) {
         let reserve = ReserveRouter.createModule(machineId: machineId, onReserved: onReserved)
         if let sheet = reserve.sheetPresentationController {
-            sheet.detents = [.medium(), .large()]
+            // A little taller than .medium(), so the payment note above the button is not cut off
+            let tall = UISheetPresentationController.Detent.custom(identifier: .init("reserve")) { context in
+                context.maximumDetentValue * 0.6
+            }
+            sheet.detents = [tall, .large()]
             sheet.prefersGrabberVisible = true
         }
         viewController?.present(reserve, animated: true)

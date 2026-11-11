@@ -20,9 +20,19 @@ while you wait.
 |:---:|:---:|:---:|
 | <img src="docs/screenshots/home.png" width="240"> | <img src="docs/screenshots/bookings.png" width="240"> | <img src="docs/screenshots/my-laundry.png" width="240"> |
 
-| Profile | Choose Laundromat |
-|:---:|:---:|
-| <img src="docs/screenshots/profile.png" width="240"> | <img src="docs/screenshots/choose-laundromat.png" width="240"> |
+| Profile | Choose Laundromat | Arrive on time |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/profile.png" width="240"> | <img src="docs/screenshots/choose-laundromat.png" width="240"> | <img src="docs/screenshots/arrive-on-time.png" width="240"> |
+
+### Reserving, checking in and paying
+
+| 1. Reserve now | 2. Or reserve for later | 3. Held for you |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/reserve-now.png" width="240"> | <img src="docs/screenshots/reserve-later.png" width="240"> | <img src="docs/screenshots/my-laundry-reserved.png" width="240"> |
+
+| 4. Check in at the machine | 5. Pay | 6. Cycle running |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/reservation-options.png" width="240"> | <img src="docs/screenshots/payment-sheet.png" width="240"> | <img src="docs/screenshots/my-laundry-running.png" width="240"> |
 
 ### Mini games
 
