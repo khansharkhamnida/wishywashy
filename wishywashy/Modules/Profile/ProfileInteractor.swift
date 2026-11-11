@@ -8,9 +8,15 @@ import Foundation
 final class ProfileInteractor: ProfileInteractorInputProtocol {
     weak var output: ProfileInteractorOutputProtocol?
 
+    private let bookings: BookingService
+
+    init(bookings: BookingService = Services.bookings) {
+        self.bookings = bookings
+    }
+
     func fetchProfile() {
-        let user = MockUser.current
-        let bookings = MockBooking.all.filter { $0.userId == user.id }
+        let user = Session.user
+        let bookings = bookings.bookings.filter { $0.userId == user.id }
         let completed = bookings.filter { $0.status == .completed }
         output?.didFetchProfile(ProfileData(user: user,
                                             totalBookings: bookings.count,

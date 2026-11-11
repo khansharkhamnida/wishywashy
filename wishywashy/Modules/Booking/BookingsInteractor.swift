@@ -8,14 +8,20 @@ import Foundation
 final class BookingsInteractor: BookingsInteractorInputProtocol {
     weak var output: BookingsInteractorOutputProtocol?
 
+    private let bookings: BookingService
+
+    init(bookings: BookingService = Services.bookings) {
+        self.bookings = bookings
+    }
+
     func cancelBooking(id: String) {
-        MockBooking.cancelReservation(bookingId: id)
+        bookings.cancelReservation(bookingId: id)
         // No leave reminder for a booking that no longer exists
         ArrivalPlanStore.shared.remove(bookingId: id)
     }
 
     func fetchBookings(filter: BookingFilter) {
-        let all = MockBooking.details
+        let all = bookings.details
         switch filter {
         case .upcoming:
             // Running cycles first, then the soonest booking

@@ -9,6 +9,12 @@ import Foundation
 class HomeInteractor: HomeInteractorInputProtocol {
     weak var output: HomeInteractorOutputProtocol?   // weak = avoids a retain cycle
 
+    private let bookings: BookingService
+
+    init(bookings: BookingService = Services.bookings) {
+        self.bookings = bookings
+    }
+
     func fetchHomeData() {
         publish(machineType: nil)
     }
@@ -29,8 +35,8 @@ class HomeInteractor: HomeInteractorInputProtocol {
 
     private func publish(machineType: MachineType?) {
         let laundromat = LaundromatStore.shared.selected
-        let machines = MockMachines.all.filter { $0.laundromatId == laundromat.id }
-        let data = HomeData(user: MockUser.current,
+        let machines = bookings.machines(inLaundromat: laundromat.id)
+        let data = HomeData(user: Session.user,
                             laundromat: laundromat,
                             machines: Self.sorted(machines, preferring: machineType))
         output?.didFetchHomeData(data)

@@ -10,12 +10,14 @@ import Foundation
 final class ArrivalPlanStore {
     static let shared = ArrivalPlanStore()
 
-    private let key = "arrivalPlans"
-    private let defaults = UserDefaults.standard
+    private let store: LocalStore
+
+    init(store: LocalStore = .shared) {
+        self.store = store
+    }
 
     var plans: [String: ArrivalPlan] {
-        guard let data = defaults.data(forKey: key) else { return [:] }
-        return (try? JSONDecoder().decode([String: ArrivalPlan].self, from: data)) ?? [:]
+        store.load([String: ArrivalPlan].self, key: StoreKey.arrivalPlans) ?? [:]
     }
 
     func plan(for bookingId: String) -> ArrivalPlan? {
@@ -25,13 +27,13 @@ final class ArrivalPlanStore {
     func save(_ plan: ArrivalPlan) {
         var current = plans
         current[plan.bookingId] = plan
-        defaults.set(try? JSONEncoder().encode(current), forKey: key)
+        store.save(current, key: StoreKey.arrivalPlans)
     }
 
     func remove(bookingId: String) {
         var current = plans
         guard current.removeValue(forKey: bookingId) != nil else { return }
-        defaults.set(try? JSONEncoder().encode(current), forKey: key)
+        store.save(current, key: StoreKey.arrivalPlans)
         NotificationService.shared.cancel(id: Self.notificationId(for: bookingId))
     }
 

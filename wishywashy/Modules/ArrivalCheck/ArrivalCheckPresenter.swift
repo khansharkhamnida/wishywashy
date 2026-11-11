@@ -172,7 +172,7 @@ final class ArrivalCheckPresenter: ArrivalCheckPresenterProtocol, ArrivalCheckIn
             verdictText = "You'd be about \(late) min late"
             tone = .peach
             leaveBy = "Leave now"
-            extra = "You'd still arrive inside the \(MockBooking.holdMinutes) min check-in window, around \(arrivalText)."
+            extra = "You'd still arrive inside the \(BookingRules.holdMinutes) min check-in window, around \(arrivalText)."
         case .tooLate:
             verdictText = "You may miss this booking"
             tone = .pink

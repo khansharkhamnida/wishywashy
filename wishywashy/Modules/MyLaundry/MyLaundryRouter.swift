@@ -27,9 +27,7 @@ final class MyLaundryRouter: MyLaundryRouterProtocol {
     }
 
     func navigateToGames() {
-        let games = GamesViewController()
-        games.hidesBottomBarWhenPushed = true
-        viewController?.navigationController?.pushViewController(games, animated: true)
+        viewController?.navigationController?.pushViewController(GamesRouter.createModule(), animated: true)
     }
 
     func collectPayment(_ request: PaymentRequest) async -> PaymentOutcome {

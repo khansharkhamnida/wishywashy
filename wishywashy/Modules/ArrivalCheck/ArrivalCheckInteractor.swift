@@ -11,10 +11,12 @@ final class ArrivalCheckInteractor: ArrivalCheckInteractorInputProtocol {
 
     private let bookingId: String
     private let store = ArrivalPlanStore.shared
+    private let bookings: BookingService
     private var task: Task<Void, Never>?
 
-    init(bookingId: String) {
+    init(bookingId: String, bookings: BookingService = Services.bookings) {
         self.bookingId = bookingId
+        self.bookings = bookings
     }
 
     // MARK: - Input
@@ -149,15 +151,15 @@ final class ArrivalCheckInteractor: ArrivalCheckInteractorInputProtocol {
 
     // MARK: - Helpers
     private func activeBooking() -> BookingDetail? {
-        MockBooking.details.first { $0.booking.id == bookingId && $0.booking.status == .confirmed && $0.booking.holdExpiresAt != nil }
+        bookings.details.first { $0.booking.id == bookingId && $0.booking.isActiveReservation }
     }
 
     private func checkInDeadline(for booking: Booking) -> Date {
-        booking.holdExpiresAt ?? booking.startTime.addingTimeInterval(TimeInterval(MockBooking.holdMinutes * 60))
+        booking.holdExpiresAt ?? booking.startTime.addingTimeInterval(TimeInterval(BookingRules.holdMinutes * 60))
     }
 
     // Switched off in Profile > Notifications
     private var remindersAllowed: Bool {
-        UserDefaults.standard.object(forKey: "notifyDepartureReminders") as? Bool ?? true
+        NotificationPreferences.shared.isOn(.departureReminders)
     }
 }

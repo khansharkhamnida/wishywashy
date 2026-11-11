@@ -1,84 +1,11 @@
 //
-//  GameKit.swift
+//  GameViews.swift
 //  wishywashy
 //
-//  Small building blocks shared by the mini games.
+//  Small views shared by the mini games.
 //
 
 import UIKit
-
-/// Per-frame update loop. Call `stop()` when leaving the screen.
-final class GameLoop {
-    private var link: CADisplayLink?
-    private var lastTimestamp: CFTimeInterval = 0
-    private let onFrame: (CFTimeInterval) -> Void
-
-    init(onFrame: @escaping (CFTimeInterval) -> Void) { self.onFrame = onFrame }
-
-    func start() {
-        stop()
-        lastTimestamp = 0
-        let link = CADisplayLink(target: self, selector: #selector(tick(_:)))
-        link.add(to: .main, forMode: .common)
-        self.link = link
-    }
-
-    func stop() {
-        link?.invalidate()
-        link = nil
-    }
-
-    @objc private func tick(_ link: CADisplayLink) {
-        // Cap the step so a hiccup never teleports things
-        let dt = lastTimestamp == 0 ? 0 : min(link.timestamp - lastTimestamp, 1.0 / 20)
-        lastTimestamp = link.timestamp
-        onFrame(dt)
-    }
-}
-
-/// Best scores, stored on the device.
-enum GameScores {
-    private static let defaults = UserDefaults.standard
-    private static let bubblePopKey = "game.bubblePop.best"
-    private static let sockMatchKey = "game.sockMatch.bestLevel"
-    private static let laundrySortKey = "game.laundrySort.best"
-
-    static var bubblePopBest: Int { defaults.integer(forKey: bubblePopKey) }
-    /// Highest Sock Match level cleared, 0 means none yet
-    static var sockMatchBestLevel: Int { defaults.integer(forKey: sockMatchKey) }
-    static var laundrySortBest: Int { defaults.integer(forKey: laundrySortKey) }
-
-    /// Daily challenge results are kept per calendar day
-    private static func sockMatchDailyKey(_ date: Date = Date()) -> String {
-        "game.sockMatch.daily.\(GameRandom.dailySeed(for: date))"
-    }
-    static var sockMatchDailyBest: Int { defaults.integer(forKey: sockMatchDailyKey()) }
-
-    /// Each `record` returns true when the result is a new best.
-    @discardableResult static func recordBubblePop(_ score: Int) -> Bool {
-        guard score > bubblePopBest else { return false }
-        defaults.set(score, forKey: bubblePopKey)
-        return true
-    }
-
-    @discardableResult static func recordSockMatch(levelCleared: Int) -> Bool {
-        guard levelCleared > sockMatchBestLevel else { return false }
-        defaults.set(levelCleared, forKey: sockMatchKey)
-        return true
-    }
-
-    @discardableResult static func recordSockMatchDaily(levelCleared: Int) -> Bool {
-        guard levelCleared > sockMatchDailyBest else { return false }
-        defaults.set(levelCleared, forKey: sockMatchDailyKey())
-        return true
-    }
-
-    @discardableResult static func recordLaundrySort(_ score: Int) -> Bool {
-        guard score > laundrySortBest else { return false }
-        defaults.set(score, forKey: laundrySortKey)
-        return true
-    }
-}
 
 /// Small outlined pill for the score / timer row.
 final class StatPill: UIView {

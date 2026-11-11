@@ -61,10 +61,10 @@ final class BookingsPresenter: BookingsPresenterProtocol, BookingsInteractorOutp
         let booking = detail.booking
         let type = detail.machine?.type ?? .washer
         let machineName = detail.machine.map { "\($0.type.rawValue.capitalized) \($0.label)" } ?? "Machine"
-        let (status, tone) = MockBooking.isHeld(booking) ? ("Reserved", Theme.Tone.peach) : statusText(for: booking.status)
+        let (status, tone) = booking.isHeld ? ("Reserved", Theme.Tone.peach) : statusText(for: booking.status)
         return BookingCardViewModel(
             bookingId: booking.id,
-            canCancel: booking.status == .confirmed && booking.holdExpiresAt != nil,
+            canCancel: booking.isActiveReservation,
             icon: type.rawValue,
             title: machineName,
             place: detail.laundromat?.name ?? "Unknown laundromat",

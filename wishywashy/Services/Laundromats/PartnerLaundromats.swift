@@ -1,5 +1,5 @@
 //
-//  MockLaundromat.swift
+//  PartnerLaundromats.swift
 //  wishywashy
 //
 //  Created by Shofia Ghazali on 3/11/26.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum MockLaundromat {
-    // id matches the laundromatId used in MockMachines
+enum PartnerLaundromats {
+    // id matches the laundromatId used in SampleMachines
     private static let tampines = Laundromat(id: "l1",
                                      name: "WishyWash Tampines",
                                      address: "Blk 4 Tampines Street 11, Singapore",

@@ -2,7 +2,7 @@
 //  LaundromatListInteractor.swift
 //  wishywashy
 //
-//  Nearby laundromats come from Apple Maps; partner laundromats (with machines) come from the mock data.
+//  Nearby laundromats come from Apple Maps; partner laundromats (with machines) come from `PartnerLaundromats`.
 //
 
 import CoreLocation
@@ -12,6 +12,7 @@ final class LaundromatListInteractor: LaundromatListInteractorInputProtocol {
     weak var output: LaundromatListInteractorOutputProtocol?   // weak avoids a retain cycle
 
     private let store = LaundromatStore.shared
+    private let bookings: BookingService
     private let partnerRadius: CLLocationDistance = 25_000
 
     private var criteria: SortingCriteria = .distance
@@ -19,6 +20,10 @@ final class LaundromatListInteractor: LaundromatListInteractorInputProtocol {
     private var results: [Laundromat] = []
     private var notice: String?
     private var loadTask: Task<Void, Never>?
+
+    init(bookings: BookingService = Services.bookings) {
+        self.bookings = bookings
+    }
 
     func fetchLaundromats() {
         load()
@@ -89,7 +94,7 @@ final class LaundromatListInteractor: LaundromatListInteractorInputProtocol {
 
     // Partners are only listed when they are reasonably close to where the user is looking
     private func partners(near center: CLLocation?) -> [Laundromat] {
-        MockLaundromat.all.compactMap { partner in
+        PartnerLaundromats.all.compactMap { partner in
             var laundromat = partner
             guard let center else {
                 laundromat.distanceMeters = nil
@@ -106,7 +111,7 @@ final class LaundromatListInteractor: LaundromatListInteractorInputProtocol {
         let withMachines = results.map { laundromat -> Laundromat in
             guard laundromat.isPartner else { return laundromat }
             var copy = laundromat
-            copy.machines = MockMachines.all.filter { $0.laundromatId == laundromat.id }
+            copy.machines = bookings.machines(inLaundromat: laundromat.id)
             return copy
         }
         output?.didFetchLaundromats(LaundromatListResult(laundromats: sorted(withMachines, by: criteria),

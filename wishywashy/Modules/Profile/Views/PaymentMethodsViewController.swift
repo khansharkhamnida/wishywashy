@@ -19,7 +19,7 @@ final class PaymentMethodsViewController: ProfilePageViewController {
     }
 
     private func reload() {
-        let methods = MockPaymentMethods.all
+        let methods = PaymentMethodStore.shared.all
         guard !methods.isEmpty else {
             setContent([ProfileUI.caption("No payment methods yet. Tap + to add one.")])
             return
@@ -38,12 +38,12 @@ final class PaymentMethodsViewController: ProfilePageViewController {
         let sheet = UIAlertController(title: method.title, message: method.detail, preferredStyle: .actionSheet)
         if !method.isDefault {
             sheet.addAction(UIAlertAction(title: "Set as default", style: .default) { [weak self] _ in
-                MockPaymentMethods.setDefault(id: method.id)
+                PaymentMethodStore.shared.setDefault(id: method.id)
                 self?.reload()
             })
         }
         sheet.addAction(UIAlertAction(title: "Remove", style: .destructive) { [weak self] _ in
-            MockPaymentMethods.remove(id: method.id)
+            PaymentMethodStore.shared.remove(id: method.id)
             self?.reload()
         })
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
@@ -55,9 +55,9 @@ final class PaymentMethodsViewController: ProfilePageViewController {
         let options: [(String, PaymentMethod)] = [("Card", .card), ("E-wallet", .eWallet), ("Apple Pay", .applePay)]
         for (title, kind) in options {
             // One Apple Pay entry is enough
-            if kind == .applePay, MockPaymentMethods.all.contains(where: { $0.kind == .applePay }) { continue }
+            if kind == .applePay, PaymentMethodStore.shared.all.contains(where: { $0.kind == .applePay }) { continue }
             sheet.addAction(UIAlertAction(title: title, style: .default) { [weak self] _ in
-                MockPaymentMethods.add(kind: kind)
+                PaymentMethodStore.shared.add(kind: kind)
                 self?.reload()
             })
         }

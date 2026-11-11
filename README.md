@@ -94,7 +94,7 @@ Reached from the **Play while you wait** card on My Laundry. The hub lists three
 - **Laundry Sort:** tap the Lights, Darks or Colors basket for the lowest falling item before it hits the bottom. It speeds up as you score, and you have three lives.
 
 #### Built with GameplayKit
-Shared pieces live in [`Shared/Gameplay/`](wishywashy/Shared/Gameplay).
+Shared pieces live in [`Modules/Games/Gameplay/`](wishywashy/Modules/Games/Gameplay).
 
 - **State machines** (`GKStateMachine`): ready, playing and over for the arcade games, and a round flow for Sock Match (peeking, picking, resolving, won, lost). Delayed work such as the flip-back is dropped when the state moves on.
 - **Entities and components** (`GKEntity`, `GKComponentSystem`): bubbles and garments are entities with view, motion, score and tone components.
@@ -128,24 +128,38 @@ Shared pieces live in [`Shared/Gameplay/`](wishywashy/Shared/Gameplay).
 - **Type:** rounded system font
 - **Cartoon details:** thick plum outlines, hard pink "sticker" shadows, striped scalloped shop awnings and washing machine portholes
 - **Dark mode:** supported throughout
-- The design system lives in [`Shared/`](wishywashy/Shared): `Theme.swift` (colors, fonts, bar styling), `CardView.swift` (cards, gradient hero, icon bubble, progress bar) `LaundryDecor.swift` (awning and porthole) and `GameKit.swift` (game loop, saved best scores, score pills and the game-over card)
+- The design system lives in [`Shared/`](wishywashy/Shared): `Theme.swift` (colors, fonts, bar styling), `CardView.swift` (cards, gradient hero, icon bubble, progress bar) and `LaundryDecor.swift` (awning and porthole). The game-only views (score pills, game-over card) live in `Modules/Games/Support/`
 
 ## Project structure
 
 ```
 wishywashy/
-├── Entities/      Machine, Laundromat, Booking, Payment, User
-├── Mocks/         Sample data (laundromats, machines, bookings, payment methods, saved laundromats)
-├── Modules/
-│   ├── Home/          VIPER module (view, presenter, interactor, router)
-│   ├── Booking/       VIPER module
-│   ├── MyLaundry/     VIPER module
-│   ├── Games/         Games hub, Bubble Pop, Sock Match, Laundry Sort
-│   ├── Profile/       VIPER module, with sub-pages for payments, saved laundromats, notifications and help
-│   └── LaundromatList/  VIPER module (sort, search and selection)
-├── Shared/        Theme, reusable cartoon views and game building blocks (Gameplay/ holds the GameplayKit pieces)
-└── MainTabBarController.swift
+├── App/             AppDelegate, SceneDelegate, MainTabBarController
+├── Entities/        Plain models: Machine, Laundromat, Booking, Payment, User, ArrivalPlan
+├── Modules/         One folder per screen flow. Each has a presenter, interactor, router and Views/
+│   ├── Home/
+│   ├── Booking/
+│   ├── Reserve/
+│   ├── MyLaundry/
+│   ├── ArrivalCheck/
+│   ├── LaundromatList/
+│   ├── Profile/       with sub-pages for payments, saved laundromats, notifications and help
+│   └── Games/         Games hub, Bubble Pop, Sock Match, Laundry Sort
+│       ├── Gameplay/  GameplayKit pieces (state machines, entities, difficulty rules, random)
+│       └── Support/   Game loop, saved best scores and the shared game views
+├── Services/        What the screens call. Interactors get these through their init, so tests can swap them
+│   ├── Bookings/      BookingService (protocol), LocalBookingService (the rules, on the device), BookingRules
+│   ├── Payments/      PaymentService, the test payment sheet, payment and saved-method stores
+│   ├── Arrival/       Travel time, leave-by maths, location and arrival plans
+│   ├── Laundromats/   Selected and saved laundromats, Apple Maps search, partner list
+│   ├── Notifications/ Local notifications and the user's preferences
+│   └── Storage/       LocalStore, the only code that touches UserDefaults
+├── SampleData/      Seed machines and bookings for the first launch
+└── Shared/          Theme, reusable cartoon views, Money
 ```
+
+Screens talk to a `BookingService` protocol. `LocalBookingService` answers on the device today, and a server version can replace it without touching any screen.
+
 
 ## Getting started
 

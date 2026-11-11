@@ -20,7 +20,7 @@ final class MockPaymentService: PaymentService {
             try? await Task.sleep(for: .seconds(0.8))
             return .paid(Payment(id: "test_\(UUID().uuidString.prefix(10))",
                                  bookingId: request.bookingId,
-                                 userId: MockUser.current.id,
+                                 userId: Session.user.id,
                                  amount: request.amount,
                                  currency: request.currency,
                                  method: method,

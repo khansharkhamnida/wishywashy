@@ -97,7 +97,7 @@ final class ReservePresenter: ReservePresenterProtocol, ReserveInteractorOutputP
         case .machineUnavailable: errorMessage = "That machine is no longer available then. Pick another time or machine."
         case .alreadyHolding: errorMessage = "You already have a reserved machine waiting for check-in. Check in or cancel it in My Laundry first."
         case .slotTaken: errorMessage = "Someone just booked that time. Pick another one."
-        case .tooManyBookings: errorMessage = "You can have up to \(MockBooking.maxUpcoming) upcoming bookings. Cancel one in Bookings first."
+        case .tooManyBookings: errorMessage = "You can have up to \(BookingRules.maxUpcoming) upcoming bookings. Cancel one in Bookings first."
         }
         selectedSlot = nil
         // Refresh what is free, because it has just changed

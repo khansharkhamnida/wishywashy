@@ -10,20 +10,22 @@ import Foundation
 final class LaundromatStore {
     static let shared = LaundromatStore()
 
-    private let defaults = UserDefaults.standard
-    private let selectedKey = "selectedLaundromat"
-    private let savedKey = "savedLaundromats"
+    private let store: LocalStore
+
+    init(store: LocalStore = .shared) {
+        self.store = store
+    }
 
     var selected: Laundromat {
-        load(Laundromat.self, key: selectedKey) ?? MockLaundromat.all[0]
+        store.load(Laundromat.self, key: StoreKey.selectedLaundromat) ?? PartnerLaundromats.all[0]
     }
 
     func select(_ laundromat: Laundromat) {
-        save(laundromat, key: selectedKey)
+        store.save(laundromat, key: StoreKey.selectedLaundromat)
     }
 
     var saved: [Laundromat] {
-        load([Laundromat].self, key: savedKey) ?? Array(MockLaundromat.all.prefix(2))
+        store.load([Laundromat].self, key: StoreKey.savedLaundromats) ?? Array(PartnerLaundromats.all.prefix(2))
     }
 
     func isSaved(id: String) -> Bool {
@@ -37,15 +39,6 @@ final class LaundromatStore {
         } else {
             current.append(laundromat)
         }
-        save(current, key: savedKey)
-    }
-
-    private func load<T: Decodable>(_ type: T.Type, key: String) -> T? {
-        guard let data = defaults.data(forKey: key) else { return nil }
-        return try? JSONDecoder().decode(type, from: data)
-    }
-
-    private func save<T: Encodable>(_ value: T, key: String) {
-        defaults.set(try? JSONEncoder().encode(value), forKey: key)
+        store.save(current, key: StoreKey.savedLaundromats)
     }
 }

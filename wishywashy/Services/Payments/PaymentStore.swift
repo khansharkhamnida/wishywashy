@@ -9,24 +9,26 @@ import Foundation
 final class PaymentStore {
     static let shared = PaymentStore()
 
-    private let key = "payments"
-    private let defaults = UserDefaults.standard
+    private let store: LocalStore
+
+    init(store: LocalStore = .shared) {
+        self.store = store
+    }
 
     var payments: [Payment] {
-        guard let data = defaults.data(forKey: key) else { return [] }
-        return (try? JSONDecoder().decode([Payment].self, from: data)) ?? []
+        store.load([Payment].self, key: StoreKey.payments) ?? []
     }
 
     func save(_ payment: Payment) {
         var current = payments.filter { $0.id != payment.id }
         current.append(payment)
-        defaults.set(try? JSONEncoder().encode(current), forKey: key)
+        store.save(current, key: StoreKey.payments)
     }
 
     func markRefunded(id: String) {
         var current = payments
         guard let index = current.firstIndex(where: { $0.id == id }) else { return }
         current[index].status = .refunded
-        defaults.set(try? JSONEncoder().encode(current), forKey: key)
+        store.save(current, key: StoreKey.payments)
     }
 }
