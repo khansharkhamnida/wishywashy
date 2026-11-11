@@ -1,0 +1,331 @@
+wishywashy/MainTabBarController.swift
+  s_331e09dac09767::t_1eb3e26abd379e 17-19
+wishywashy.xcodeproj/project.pbxproj
+  s_c1616dbe193969::t_4f1ac062b30b13 9-18,21,43-47,58-64,72,81,111-133,147-150,168,181-187,198-204,207-214,395-430,452-457,460
+  s_c1616dbe193969::t_943d265fc35b68 458-459
+wishywashyTests/MockBookingTests.swift
+  s_c1616dbe193969::t_0d2cb4b9d2b436 109-234
+  s_c1616dbe193969::t_679634de467071 1-108,235-271
+wishywashy/Shared/Gameplay/DifficultyRules.swift
+  s_8a5a888a77fbfc::t_f3ea172b2bf5f2 1-112
+wishywashy/Modules/Profile/Views/HelpSupportViewController.swift
+  s_331e09dac09767::t_8dd96e6d8f0d99 1-81
+wishywashy/Modules/Booking/BookingsPresenter.swift
+  s_331e09dac09767::t_4f12e16fca9ddc 1-10,12-40,54-63,65,68-103
+  s_331e09dac09767::t_1b1180221b5843 11,42-46
+  s_331e09dac09767::t_d20fdaa7efe888 64
+  s_331e09dac09767::t_2666d3baaaf0d3 41,47-53,66-67
+wishywashy/Modules/Games/Views/LaundrySortViewController.swift
+  s_8a5a888a77fbfc::t_3c0e6892f718d8 6-7,10,45,48-50,55-59,68-77,173-175,177-181,192-196,198,202,206,215-220,222,231-233,236,242-243,246-247,254,256,259,266-267,291-305,315-316,319,332,345
+  s_8a5a888a77fbfc::t_2ac4a64e81d5a3 61-62
+  s_2daf78ac2bc9cd::t_97b54b076a38db 1-5,8-9,11-44,46-47,51-54,60,63-67,78-172,176,182-191,197,199-201,203-205,207-214,221,223-230,234-235,237-241,244-245,248-253,255,257-258,260-265,268-269,272-281,283-290,306-314,317-318,320-331,333-344,346-373
+  s_2daf78ac2bc9cd::t_2a5cc4f8eb0c1e 270-271,282
+README.md
+  s_331e09dac09767::t_eb7ef63dc8a099 44
+  s_2daf78ac2bc9cd::t_56e33320e018b0 87-92
+  s_331e09dac09767::t_40218d8a454b35 109-113
+  s_8a5a888a77fbfc::t_314f4f293c6690 93,96-104,146
+  s_331e09dac09767::t_ed7061a436ed7c 54-71,76,162
+  s_331e09dac09767::t_4de4df6389e717 36-40,160-161
+  s_331e09dac09767::t_995180da0bd18c 119
+  s_2daf78ac2bc9cd::t_194c7cbb24425c 17-22,25-27,81-86,94,131,143,167
+  s_331e09dac09767::t_2119c4fa3738da 116-118,120
+  s_331e09dac09767::t_8cfa8aa71e1819 5,138,141-142,144-145,158-159
+  s_331e09dac09767::t_7ca72d6ce6d125 122
+  s_331e09dac09767::t_492e2cd231348e 43,74,79-80
+  s_331e09dac09767::t_a918f991ac12cc 48-50,52-53,77
+  s_331e09dac09767::t_4256c82abb8e3f 46
+  s_c1616dbe193969::t_9b427c239e9ac4 47,51,95,163-164
+wishywashy/Modules/Booking/BookingsRouter.swift
+  s_331e09dac09767::t_1b1180221b5843 20,25-28
+  s_331e09dac09767::t_4f12e16fca9ddc 1-19,21-24,29-30
+wishywashy/Modules/Profile/ProfileRouter.swift
+  s_331e09dac09767::t_1eb3e26abd379e 1-38
+wishywashy/Modules/Reserve/ReserveInteractor.swift
+  s_331e09dac09767::t_5c5e6bd63f738a 1-23,27-28,43-47
+  s_331e09dac09767::t_434fa8b12b2136 24-26,29-42
+wishywashy/Modules/ArrivalCheck/ArrivalCheckPresenter.swift
+  s_331e09dac09767::t_930a3bdaf5daaa 1-139,141-144,146-221
+  s_331e09dac09767::t_8e775392635a9b 140,145
+wishywashy/Modules/LaundromatList/LaundromatListInteractor.swift
+  s_331e09dac09767::t_b45fece760590b 43,46
+  s_331e09dac09767::t_04464b53ca273f 5,8-9,14-16,19-21,24,27-29,32-33,38-39,44-45,49-115,118,132,135
+  s_331e09dac09767::t_abf78f39d0949e 136-137,139,144,146-152
+  s_331e09dac09767::t_cd01d846694e8d 17-18,25-26,30-31,34-37,40-42,116-117,119-130,133-134,138,140-143,145
+  s_331e09dac09767::t_1cc2ef6723dd6d 131,153
+wishywashy/Modules/Profile/Views/SavedLaundromatsViewController.swift
+  s_331e09dac09767::t_92f5e0416047d0 18-21,23,28,31,33,37
+  s_331e09dac09767::t_8dd96e6d8f0d99 1-17,22,24-27,29-30,32,34-36,38-44
+wishywashy/Modules/LaundromatList/LaundromatListRouter.swift
+  s_331e09dac09767::t_cd01d846694e8d 42,44-50
+  s_331e09dac09767::t_2636e4a0e83a1a 14-36,43
+  s_331e09dac09767::t_26d8782c1e8850 8-9,11,13,37-39,51
+wishywashy/Modules/Reserve/Views/ReserveViewController.swift
+  s_331e09dac09767::t_5c5e6bd63f738a 1-4,6-12,14,22,26,29-31,36,49,55-57,61-82,96-97,111-113,144-147,149,151-152,154,194-197,199-200
+  s_331e09dac09767::t_80dfe4b990fc1d 155
+  s_331e09dac09767::t_434fa8b12b2136 5,13,15-21,23-25,27-28,32-35,37-48,50-54,58-60,83-95,98-110,114-143,148,150,153,156-193,198
+wishywashy/Modules/MyLaundry/MyLaundryViewController.swift
+  s_331e09dac09767::t_d20fdaa7efe888 123-132,195-197,199
+  s_331e09dac09767::t_723370a0b8998f 5,12-18,26-30,60-67,76-80,85-91,93-106,133-178,217
+  s_331e09dac09767::t_1eb3e26abd379e 92
+  s_331e09dac09767::t_1b1180221b5843 113-122,198
+  s_331e09dac09767::t_2666d3baaaf0d3 107-112
+  s_331e09dac09767::t_2cab7229269647 200
+wishywashy/Shared/CardView.swift
+  s_2daf78ac2bc9cd::t_0f78fda3d5b41d 11-12,39
+wishywashy/Modules/Games/Views/GamesViewController.swift
+  s_2daf78ac2bc9cd::t_09d2d96a1ac07b 25-26
+  s_2daf78ac2bc9cd::t_29b2aaa8ffaf2e 1-24,27-142
+wishywashy/Mocks/MockLaundromat.swift
+  s_331e09dac09767::t_95846ce69c005f 19,32-33,42-43,52-53
+  s_331e09dac09767::t_85c88c28577852 12,23
+  s_331e09dac09767::t_04464b53ca273f 20
+wishywashy/Modules/MyLaundry/MyLaundryPresenter.swift
+  s_331e09dac09767::t_723370a0b8998f 1-12,16-32,46-48,68,72-75,86-87,96-98,114-123,128-135,163-178
+  s_331e09dac09767::t_1b1180221b5843 13-15,37-44,66-67,76,105,126,136-162
+  s_331e09dac09767::t_cebba20d7e0679 33,51-63
+  s_331e09dac09767::t_d20fdaa7efe888 34-36,45,69-71,77-85,88-95,99-104,106-113,124-125,127
+  s_331e09dac09767::t_2666d3baaaf0d3 49-50,64-65
+wishywashy/Entities/ProfileData.swift
+  s_331e09dac09767::t_1eb3e26abd379e 1-13
+wishywashy/Modules/Reserve/ReserveProtocols.swift
+  s_331e09dac09767::t_80dfe4b990fc1d 80-81
+  s_331e09dac09767::t_5c5e6bd63f738a 1-7,12-15,25-32,39,41,43-46,48-53,57-63,67-71,73-79,82
+  s_331e09dac09767::t_434fa8b12b2136 8-11,16-24,33-38,40,42,47,54-56,64-66,72
+wishywashy/Modules/Reserve/ReserveRouter.swift
+  s_331e09dac09767::t_5c5e6bd63f738a 1-30,36-38
+  s_331e09dac09767::t_80dfe4b990fc1d 31-35
+wishywashy/Mocks/MockMachine.swift
+  s_331e09dac09767::t_7570d0770cb44c 18-23,51,54,153
+  s_331e09dac09767::t_f1d72c33bc9090 55-68,70-80,83-99,101-130,132-147
+  s_331e09dac09767::t_9b2fbca2d8a16c 81-82
+  s_c1616dbe193969::t_76b37cfd468e46 41,69,100
+  s_c1616dbe193969::t_b768ee633c60b7 131
+  s_c1616dbe193969::t_e2bab1e7a8744e 11-17,149-152,154-155
+wishywashy/Shared/Money.swift
+  s_331e09dac09767::t_556b212ef28c89 1-21
+wishywashy/Services/LaundromatSearchService.swift
+  s_331e09dac09767::t_95846ce69c005f 1-54
+wishywashy/Modules/Profile/ProfileProtocols.swift
+  s_331e09dac09767::t_1eb3e26abd379e 1-51
+wishywashy/Services/LocationService.swift
+  s_331e09dac09767::t_95846ce69c005f 1-20,29-73
+  s_331e09dac09767::t_d874143f290b2e 21
+  s_331e09dac09767::t_56c193f81daaa5 22-28
+wishywashy/Modules/Games/Views/BubblePopViewController.swift
+  s_2daf78ac2bc9cd::t_97b54b076a38db 1-5,9-10,12-15,17-20,26-29,46,49-51,64-122,126-127,131-142,148-153,155-158,160-166,168-171,173-177,180-183,190,192,194-200,203,209-228,235-236,258-259,261-262,264-266,272-274,279-323
+  s_8a5a888a77fbfc::t_a42dddb5998e25 6-8,11,16,21-25,30-45,52-63,123-125,128-130,143-147,154,159,167,172,178-179,184-189,191,193,201-202,204-208,229-234,237-257,260,263,267-271,275-278
+  s_8a5a888a77fbfc::t_2ac4a64e81d5a3 47-48
+wishywashy/Services/TravelTimeService.swift
+  s_331e09dac09767::t_56c193f81daaa5 1-23
+wishywashy/Services/Payments/MockPaymentService.swift
+  s_331e09dac09767::t_90d8de426d2116 1-7,9-60
+  s_c1616dbe193969::t_ed1d4c4998836f 8
+wishywashy/Modules/LaundromatList/Views/LaundromatListCell.swift
+  s_331e09dac09767::t_b45fece760590b 1-16,19-51,54-82,84-91,95-102
+  s_331e09dac09767::t_2253c715d7a1f7 17-18,52-53,83,92-94
+wishywashy/Mocks/MockStore.swift
+  s_331e09dac09767::t_7570d0770cb44c 1-14,18,20-23,25-26
+  s_c1616dbe193969::t_a1765e115bd90c 15-17,19,24
+.gitignore
+  s_c1616dbe193969::t_0e412880ffa5ad 1-8
+wishywashy/Entities/Payment.swift
+  s_331e09dac09767::t_90d8de426d2116 15,24-25
+wishywashy/AppDelegate.swift
+  s_331e09dac09767::t_56c193f81daaa5 9,17
+wishywashy/Shared/Gameplay/GameEntities.swift
+  s_8a5a888a77fbfc::t_f3ea172b2bf5f2 1-125
+wishywashy/Modules/Home/Views/HomeViewController.swift
+  s_331e09dac09767::t_a25189801eba25 63,273-275
+  s_331e09dac09767::t_92f5e0416047d0 40,236,238-247
+  s_331e09dac09767::t_a32bbf1e1c0f84 250-254,276
+  s_331e09dac09767::t_f1d72c33bc9090 38-39,41-46,257
+  s_331e09dac09767::t_8f00bee15842ef 13,16,22,33,47,58,65,70,76,80,89,92,98,102,106,115,128,130,137,142,156-159,161,171,182,184,189,197,201,205,210,213,216,221,235,249,267,277,284,288
+wishywashy/Services/ArrivalPlanStore.swift
+  s_c1616dbe193969::t_76b37cfd468e46 38-44
+  s_331e09dac09767::t_56c193f81daaa5 1-37,45-48
+wishywashy/Modules/Booking/BookingsInteractor.swift
+  s_331e09dac09767::t_4f12e16fca9ddc 1-10,17-38
+  s_331e09dac09767::t_1b1180221b5843 13-14
+  s_331e09dac09767::t_2666d3baaaf0d3 11-12,15-16
+wishywashy/Mocks/MockBooking.swift
+  s_331e09dac09767::t_bd976df38996cb 156,159-163,168-185
+  s_331e09dac09767::t_556b212ef28c89 1-7,25,42-43,47-59,63,65-67,69,71,157,189,205,270,273,317-319,347,349-351,353-357,359-369,372-373
+  s_331e09dac09767::t_536e187c88163b 11-19,21-24,26,30-34,36-41,44-46,61,73-155,164-167,192-204,212-213,225-251,271-272,283,305-313,320-346,348,352,370-371
+  s_c1616dbe193969::t_19128188f8a109 28-29,190-191
+  s_331e09dac09767::t_7d980f87b52bde 35
+  s_c1616dbe193969::t_76b37cfd468e46 207-209,214-219,252-269,275-282,284-304
+  s_c1616dbe193969::t_b38d9dc5089d9e 8-10,20,27,60,62,64,68,70,72,158,186-188,206,210-211,220-224,274,314-316,358
+wishywashy/Modules/Home/HomePresenter.swift
+  s_331e09dac09767::t_92f5e0416047d0 41
+  s_331e09dac09767::t_2666d3baaaf0d3 56,58
+  s_331e09dac09767::t_a32bbf1e1c0f84 43,67-68
+  s_331e09dac09767::t_a25189801eba25 17-19,38,50-55,57,59-63
+  s_331e09dac09767::t_2636e4a0e83a1a 73-76
+wishywashy/Entities/Laundromat.swift
+  s_331e09dac09767::t_85c88c28577852 24
+  s_331e09dac09767::t_95846ce69c005f 20-21,42
+  s_331e09dac09767::t_ca1a487045a0a1 29
+  s_331e09dac09767::t_b45fece760590b 41
+  s_331e09dac09767::t_95bb0747de3e67 23,25-28,30-40,43-46
+wishywashy/Modules/Profile/ProfilePresenter.swift
+  s_331e09dac09767::t_1eb3e26abd379e 1-32
+wishywashy/Modules/Booking/Views/BookingsViewController.swift
+  s_331e09dac09767::t_1b1180221b5843 74-76
+  s_331e09dac09767::t_4f12e16fca9ddc 5,12-15,30-37,61-71,86-90,103,107,183
+  s_331e09dac09767::t_2666d3baaaf0d3 42,72-73,77-85,91-98
+wishywashy/Modules/LaundromatList/Views/LaundromatListViewController.swift
+  s_331e09dac09767::t_da3ad9c17271ba 21-23,52,67-93,95-99,101-111,116,121-139,141,144
+  s_331e09dac09767::t_2253c715d7a1f7 19-20,41-49,58-59,61,94,112-115,117-120,162,165-173,175-178,196,204-208,210-212,214,217-221
+  s_331e09dac09767::t_b45fece760590b 5,11-18,24,30-40,50-51,53-57,60,62-66,140,142-143,145-149,153-161,163,174,179-194,198,203,209,213,222,227
+wishywashy/Info.plist
+  s_331e09dac09767::t_92f5e0416047d0 5-6
+wishywashy/Shared/Gameplay/GameRandom.swift
+  s_8a5a888a77fbfc::t_a54421fb8f814c 1-48,53-63
+  s_8a5a888a77fbfc::t_e7170725f9dcb4 49-52
+wishywashy/Modules/Home/HomeProtocols.swift
+  s_331e09dac09767::t_92f5e0416047d0 12
+  s_331e09dac09767::t_a25189801eba25 20-21,40-41
+  s_8a5a888a77fbfc::t_fae9824e2d914c 30
+  s_331e09dac09767::t_a32bbf1e1c0f84 14,29
+  s_331e09dac09767::t_2636e4a0e83a1a 39
+wishywashy/Modules/Booking/BookingsProtocols.swift
+  s_331e09dac09767::t_2666d3baaaf0d3 13-15,28,36,38,44
+  s_331e09dac09767::t_1b1180221b5843 37,54
+  s_331e09dac09767::t_4f12e16fca9ddc 1-12,16-27,29-35,39-43,45-53,55
+wishywashy/Modules/ArrivalCheck/ArrivalCheckProtocols.swift
+  s_331e09dac09767::t_d874143f290b2e 1-93
+wishywashy/Services/Payments/PaymentService.swift
+  s_331e09dac09767::t_90d8de426d2116 1-20,22-26,28
+  s_c1616dbe193969::t_b8d923afa8107d 21,27
+wishywashy/Modules/ArrivalCheck/ArrivalCheckRouter.swift
+  s_331e09dac09767::t_930a3bdaf5daaa 1-45
+wishywashy/Services/NotificationService.swift
+  s_331e09dac09767::t_56c193f81daaa5 1-7,9-17,19-60
+  s_331e09dac09767::t_d874143f290b2e 8,18
+wishywashy/Modules/Reserve/ReservePresenter.swift
+  s_331e09dac09767::t_5c5e6bd63f738a 1-12,33,55-56,67-72,112,151-155,162,166-167,175-177
+  s_331e09dac09767::t_cebba20d7e0679 148
+  s_331e09dac09767::t_434fa8b12b2136 13-32,34-54,57-66,73-111,113-147,149-150,156-161,163-165,168-174
+wishywashy/Modules/LaundromatList/LaundromatListProtocols.swift
+  s_331e09dac09767::t_b45fece760590b 26,36
+  s_331e09dac09767::t_cd01d846694e8d 22-25,31-33,35,39,45-47
+  s_331e09dac09767::t_04464b53ca273f 7-20,27-29,34,37,40-43,48
+  s_331e09dac09767::t_b35046741ca7a7 1-6,21,30,38,44
+wishywashy/Entities/ArrivalPlan.swift
+  s_331e09dac09767::t_56c193f81daaa5 1-43
+wishywashy/Modules/Home/HomeInteractor.swift
+  s_331e09dac09767::t_a32bbf1e1c0f84 16-20,22
+  s_331e09dac09767::t_92f5e0416047d0 31
+  s_8a5a888a77fbfc::t_fae9824e2d914c 12-15,23-27,29-30,32-58
+wishywashy/Modules/MyLaundry/MyLaundryProtocols.swift
+  s_331e09dac09767::t_cebba20d7e0679 57-58,65-66,76
+  s_331e09dac09767::t_1b1180221b5843 12-13,37,49,67,75
+  s_331e09dac09767::t_d20fdaa7efe888 9-11,46-48,59
+  s_331e09dac09767::t_2666d3baaaf0d3 38,64
+  s_331e09dac09767::t_723370a0b8998f 1-8,14-36,39-45,50-56,60-63,68-74,77
+wishywashy/Mocks/MockPaymentMethods.swift
+  s_331e09dac09767::t_90d8de426d2116 41-44
+  s_331e09dac09767::t_80708b624ac05d 1-40,45-52
+wishywashy/Modules/Profile/Views/ProfileViewController.swift
+  s_331e09dac09767::t_1eb3e26abd379e 5,12,17-18,20-22,26,30,44,49,72,74,99-103,105-106,108,111,113-115,120
+  s_331e09dac09767::t_0a3147d6750555 10,107,109
+wishywashy/Modules/Profile/Views/NotificationSettingsViewController.swift
+  s_331e09dac09767::t_8dd96e6d8f0d99 1-23,26-55
+  s_331e09dac09767::t_1b1180221b5843 24-25
+wishywashy/Services/Payments/PaymentStore.swift
+  s_331e09dac09767::t_90d8de426d2116 1-32
+wishywashy/Modules/Profile/ProfileInteractor.swift
+  s_331e09dac09767::t_1eb3e26abd379e 1-20
+wishywashy/Modules/LaundromatList/LaundromatListPresenter.swift
+  s_331e09dac09767::t_b45fece760590b 29-33
+  s_331e09dac09767::t_cd01d846694e8d 6-24,27-28,34-39,44,59,69-71,86-88
+  s_331e09dac09767::t_04464b53ca273f 25-26,41-43,45-58,62-68,72-85,89
+  s_331e09dac09767::t_b84ce9a8f26376 5,40,60-61,90
+wishywashy/Services/LaundromatStore.swift
+  s_331e09dac09767::t_95846ce69c005f 1-51
+wishywashy/Modules/Home/HomeRouter.swift
+  s_331e09dac09767::t_2666d3baaaf0d3 40
+  s_331e09dac09767::t_a25189801eba25 33-39,41-47
+  s_331e09dac09767::t_2636e4a0e83a1a 29-30
+  s_331e09dac09767::t_130cc7d517f3b0 31-32
+wishywashy/Entities/Booking.swift
+  s_331e09dac09767::t_556b212ef28c89 28-33
+  s_331e09dac09767::t_2b577d7917725e 25-27
+wishywashy/Modules/Games/Views/SockMatchViewController.swift
+  s_2daf78ac2bc9cd::t_97b54b076a38db 1-5,8-9,11-90,119,127-128,133-134,136,141-150,152-153,155,157-163,165-170,172-192,198-205,232-233,241,243-244,247,283,285-286,303,305,307-316,318,330-332,335,340-353,356,359,366,397-398,400,426,432-438
+  s_8a5a888a77fbfc::t_386cbf08ff8ba4 6-7,10,101,106-110,122-124,129-132,137,151,206-230,234-239,242,248-266,268-270,273-274,276-281,298-301,326-327,339,355,357-358,360-365,367-382,384,386-390,392,394-395,399,401-404,407-408,413,418,420,422-425,430
+  s_2daf78ac2bc9cd::t_09d2d96a1ac07b 91-100,102-105,111-118,120-121,125-126,135,138-140,154,156,164,171,193-197,231,240,245-246,267,271-272,275,282,284,287-297,302,304,306,317,319-325,328-329,333-334,336-338,383,385,391,393,396,405-406,409-412,414-417,419,421,427-429,431
+  s_2daf78ac2bc9cd::t_d3d51bb97e977d 354
+wishywashy/Shared/Gameplay/GamePhaseStates.swift
+  s_8a5a888a77fbfc::t_a54421fb8f814c 1-117
+wishywashy/Modules/ArrivalCheck/Views/ArrivalCheckViewController.swift
+  s_331e09dac09767::t_8e775392635a9b 1-293
+wishywashy/Modules/Profile/Views/ProfileComponents.swift
+  s_331e09dac09767::t_80708b624ac05d 1-147
+wishywashy/Modules/MyLaundry/MyLaundryInteractor.swift
+  s_331e09dac09767::t_723370a0b8998f 1-12,16-18,20,22,58-59
+  s_331e09dac09767::t_1b1180221b5843 23,32-35,56
+  s_331e09dac09767::t_cebba20d7e0679 26-31,36-49
+  s_331e09dac09767::t_2666d3baaaf0d3 21,50
+  s_331e09dac09767::t_d20fdaa7efe888 13-15,19,24-25,51-55,57
+wishywashy/Services/ArrivalCalculator.swift
+  s_331e09dac09767::t_56c193f81daaa5 1-33
+wishywashy/Modules/MyLaundry/MyLaundryRouter.swift
+  s_331e09dac09767::t_723370a0b8998f 1-34,44-47
+  s_331e09dac09767::t_cebba20d7e0679 35-39
+  s_331e09dac09767::t_1b1180221b5843 40-43
+wishywashy/Modules/ArrivalCheck/ArrivalCheckInteractor.swift
+  s_331e09dac09767::t_d874143f290b2e 1-163
+wishywashy/Modules/Profile/Views/PaymentMethodsViewController.swift
+  s_331e09dac09767::t_8dd96e6d8f0d99 1-33,35-78,80-87,89-95
+  s_331e09dac09767::t_90d8de426d2116 34,79,88
+wishywashy/Shared/GameKit.swift
+  s_2daf78ac2bc9cd::t_0f78fda3d5b41d 1-42,44-46,49-50,57-63,73-249
+  s_8a5a888a77fbfc::t_386cbf08ff8ba4 51-56,67-72
+  s_2daf78ac2bc9cd::t_09d2d96a1ac07b 43,47-48,64-66
+wishywashy/Entities/HomeData.swift
+  s_331e09dac09767::t_1642e61dd593d7 13-21
+wishywashy/Modules/MyLaundry/CycleCell.swift
+  s_331e09dac09767::t_545852a06f3291 1-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "aed77174794083f82fcf3f2b04534bd834e7ec98",
+  "prompts": {},
+  "sessions": {
+    "s_2daf78ac2bc9cd": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "c841257a-4f2c-4bd3-b410-a71ea1ab91a8",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    },
+    "s_331e09dac09767": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "ff6800cd-8c8a-44f9-ae95-43d721f65324",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    },
+    "s_8a5a888a77fbfc": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "0d13a09a-0561-488c-8ecd-9e5784d264ec",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    },
+    "s_c1616dbe193969": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "2f4498a8-a25e-4316-ad59-190ee305a9f5",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    }
+  }
+}
