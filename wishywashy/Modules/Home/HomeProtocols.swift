@@ -9,13 +9,16 @@ import UIKit
 //Presenter -> View
 protocol HomeViewProtocol: AnyObject {
     func showUser(name: String)
-    func showLaundromat(name: String, isOperating: Bool)
+    func showLaundromat(name: String, isOperating: Bool?)
     func showMachines(_ machines: [MachineCardViewModel])
+    func showRefreshing(_ isRefreshing: Bool)
 }
 
 //View -> Presenter
 protocol HomePresenterProtocol: AnyObject {
     func viewDidLoad()
+    func viewWillAppear()
+    func didSelectMachine(at index: Int)
     func didTapRefresh()
     func didTapChangeLocation()
 }
@@ -23,6 +26,8 @@ protocol HomePresenterProtocol: AnyObject {
 //Presenter -> Interactor
 protocol HomeInteractorInputProtocol: AnyObject {
     func fetchHomeData()
+    func refreshHomeData()
+    func sortMachines(by type: MachineType)
 }
 
 //Interactor -> Presenter
@@ -31,5 +36,7 @@ protocol HomeInteractorOutputProtocol: AnyObject {
 }
 protocol HomeRouterProtocol: AnyObject {
     static func createModule() -> UIViewController
-    func navigateToLaundromatList()
+    func navigateToLaundromatList(onSelect: @escaping () -> Void)
+    func navigateToReserve(machineId: String, onReserved: @escaping () -> Void)
+    func showMyLaundry()
 }

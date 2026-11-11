@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		FC06F8F73099B16600545119 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC06F8B83099B16400545119 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FC06F8BF3099B16400545119;
+			remoteInfo = wishywashy;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		FC06F8C03099B16400545119 /* wishywashy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wishywashy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC06F8F13099B16600545119 /* wishywashyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wishywashyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,10 +40,22 @@
 			path = wishywashy;
 			sourceTree = "<group>";
 		};
+		FC06F8F23099B16600545119 /* wishywashyTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = wishywashyTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		FC06F8BD3099B16400545119 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC06F8F33099B16600545119 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				FC06F8C23099B16400545119 /* wishywashy */,
+				FC06F8F23099B16600545119 /* wishywashyTests */,
 				FC06F8C13099B16400545119 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				FC06F8C03099B16400545119 /* wishywashy.app */,
+				FC06F8F13099B16600545119 /* wishywashyTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,6 +108,29 @@
 			productReference = FC06F8C03099B16400545119 /* wishywashy.app */;
 			productType = "com.apple.product-type.application";
 		};
+		FC06F8F63099B16600545119 /* wishywashyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FC06F8FB3099B16600545119 /* Build configuration list for PBXNativeTarget "wishywashyTests" */;
+			buildPhases = (
+				FC06F8F43099B16600545119 /* Sources */,
+				FC06F8F33099B16600545119 /* Frameworks */,
+				FC06F8F53099B16600545119 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FC06F8F83099B16600545119 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				FC06F8F23099B16600545119 /* wishywashyTests */,
+			);
+			name = wishywashyTests;
+			packageProductDependencies = (
+			);
+			productName = wishywashyTests;
+			productReference = FC06F8F13099B16600545119 /* wishywashyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -95,6 +143,10 @@
 				TargetAttributes = {
 					FC06F8BF3099B16400545119 = {
 						CreatedOnToolsVersion = 26.0.1;
+					};
+					FC06F8F63099B16600545119 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = FC06F8BF3099B16400545119;
 					};
 				};
 			};
@@ -113,12 +165,20 @@
 			projectRoot = "";
 			targets = (
 				FC06F8BF3099B16400545119 /* wishywashy */,
+				FC06F8F63099B16600545119 /* wishywashyTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		FC06F8BE3099B16400545119 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC06F8F53099B16600545119 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +195,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FC06F8F43099B16600545119 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FC06F8F83099B16600545119 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FC06F8BF3099B16400545119 /* wishywashy */;
+			targetProxy = FC06F8F73099B16600545119 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		FC06F8D33099B16600545119 /* Debug */ = {
@@ -317,6 +392,42 @@
 			};
 			name = Release;
 		};
+		FC06F8F93099B16600545119 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.foodpanda.wishywashyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wishywashy.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/wishywashy";
+			};
+			name = Debug;
+		};
+		FC06F8FA3099B16600545119 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.foodpanda.wishywashyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wishywashy.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/wishywashy";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -334,6 +445,15 @@
 			buildConfigurations = (
 				FC06F8D33099B16600545119 /* Debug */,
 				FC06F8D43099B16600545119 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FC06F8FB3099B16600545119 /* Build configuration list for PBXNativeTarget "wishywashyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC06F8F93099B16600545119 /* Debug */,
+				FC06F8FA3099B16600545119 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

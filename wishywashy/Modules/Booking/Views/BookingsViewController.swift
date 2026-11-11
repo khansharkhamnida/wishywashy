@@ -2,41 +2,17 @@
 //  BookingsViewController.swift
 //  wishywashy
 //
-//  UI only: static sample content.
+//  Shows the user's bookings, split into upcoming and past.
 //
 
 import UIKit
 
-private struct BookingSample {
-    let icon: String
-    let title: String
-    let place: String
-    let date: String
-    let price: String
-    let status: String
-    let tone: Theme.Tone
-}
-
 final class BookingsViewController: UIViewController {
 
-    private let upcoming = [
-        BookingSample(icon: "dryer", title: "Dryer D01", place: "WishyWash Tampines", date: "Today · 4:30 PM – 5:10 PM",
-                      price: "S$4.00", status: "Confirmed", tone: .blue),
-        BookingSample(icon: "washer", title: "Washer W03", place: "WishyWash Tampines", date: "Tomorrow · 10:00 AM – 10:36 AM",
-                      price: "S$6.00", status: "Confirmed", tone: .blue),
-        BookingSample(icon: "washer", title: "Washer W01", place: "WishyWash Orchard", date: "Sat, 9 Nov · 2:00 PM – 2:36 PM",
-                      price: "S$6.00", status: "Pending", tone: .peach)
-    ]
-    private let past = [
-        BookingSample(icon: "washer", title: "Washer W01", place: "WishyWash Tampines", date: "Yesterday · 11:00 AM – 11:36 AM",
-                      price: "S$6.00", status: "Completed", tone: .lilac),
-        BookingSample(icon: "dryer", title: "Dryer D01", place: "WishyWash Tampines", date: "2 Nov · 3:00 PM – 3:40 PM",
-                      price: "S$4.00", status: "Completed", tone: .lilac),
-        BookingSample(icon: "washer", title: "Washer W04", place: "WishyWash Tampines", date: "29 Oct · 8:00 PM – 8:30 PM",
-                      price: "S$5.00", status: "Cancelled", tone: .pink)
-    ]
+    var presenter: BookingsPresenterProtocol?
 
-    private var shown: [BookingSample] { segmentedControl.selectedSegmentIndex == 0 ? upcoming : past }
+    private var bookings: [BookingCardViewModel] = []
+    private let emptyLabel = UILabel()
 
     private let segmentedControl = UISegmentedControl(items: ["Upcoming", "Past"])
     private let tableView = UITableView(frame: .zero, style: .plain)
@@ -51,12 +27,19 @@ final class BookingsViewController: UIViewController {
         segmentedControl.backgroundColor = Theme.Tone.pink.soft
         segmentedControl.setTitleTextAttributes([.font: Theme.font(15, .semibold), .foregroundColor: Theme.inkSoft], for: .normal)
         segmentedControl.setTitleTextAttributes([.font: Theme.font(15, .bold), .foregroundColor: Theme.dynamic(light: 0xFFFFFF, dark: 0x1C1327)], for: .selected)
-        segmentedControl.addAction(UIAction { [weak self] _ in self?.tableView.reloadData() }, for: .valueChanged)
+        segmentedControl.addAction(UIAction { [weak self] _ in
+            guard let self else { return }
+            self.presenter?.didSelectFilter(self.segmentedControl.selectedSegmentIndex == 0 ? .upcoming : .past)
+        }, for: .valueChanged)
+
+        emptyLabel.font = Theme.font(16, .semibold)
+        emptyLabel.textColor = Theme.inkSoft
+        emptyLabel.textAlignment = .center
 
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
-        tableView.allowsSelection = false
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
         tableView.register(BookingCell.self, forCellReuseIdentifier: BookingCell.identifier)
 
@@ -75,15 +58,53 @@ final class BookingsViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+
+        presenter?.viewDidLoad()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter?.viewWillAppear()
+    }
+}
+
+extension BookingsViewController: BookingsViewProtocol {
+    func showBookingOptions(bookingId: String, title: String) {
+        let sheet = UIAlertController(title: title, message: "It is free to cancel before you check in.", preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "Check if I can arrive on time", style: .default) { [weak self] _ in
+            self?.presenter?.didCheckArrival(id: bookingId)
+        })
+        sheet.addAction(UIAlertAction(title: "Cancel booking", style: .destructive) { [weak self] _ in
+            self?.presenter?.didCancelBooking(id: bookingId)
+        })
+        sheet.addAction(UIAlertAction(title: "Keep it", style: .cancel))
+        sheet.popoverPresentationController?.sourceView = view
+        sheet.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+        present(sheet, animated: true)
+    }
+
+    func showBookings(_ items: [BookingCardViewModel], emptyMessage: String) {
+        bookings = items
+        emptyLabel.text = emptyMessage
+        tableView.backgroundView = items.isEmpty ? emptyLabel : nil
+        tableView.reloadData()
+    }
+}
+
+extension BookingsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let item = bookings[indexPath.row]
+        if item.canCancel { presenter?.didTapBooking(id: item.bookingId) }
     }
 }
 
 extension BookingsViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { shown.count }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { bookings.count }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BookingCell.identifier, for: indexPath) as! BookingCell
-        let item = shown[indexPath.row]
+        let item = bookings[indexPath.row]
         cell.configure(icon: item.icon, title: item.title, place: item.place, date: item.date,
                        price: item.price, status: item.status, tone: item.tone)
         return cell
@@ -159,5 +180,5 @@ private final class BookingCell: UITableViewCell {
 }
 
 #Preview {
-    UINavigationController(rootViewController: BookingsViewController())
+    UINavigationController(rootViewController: BookingsRouter.createModule())
 }

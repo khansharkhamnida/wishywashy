@@ -8,6 +8,8 @@ import UIKit
 /// Cartoon sticker card: thick ink outline with a hard pink shadow.
 final class CardView: UIView {
     var isEmphasized = false { didSet { updateStyle() } }
+    /// Overrides the default white / pink fill.
+    var fill: UIColor? { didSet { updateStyle() } }
 
     private let radius: CGFloat
 
@@ -34,7 +36,7 @@ final class CardView: UIView {
     }
 
     private func updateStyle() {
-        backgroundColor = isEmphasized ? Theme.Tone.pink.soft : Theme.card
+        backgroundColor = fill ?? (isEmphasized ? Theme.Tone.pink.soft : Theme.card)
         layer.borderColor = Theme.ink.resolvedColor(with: traitCollection).cgColor
         layer.shadowColor = (isEmphasized ? Theme.ink : Theme.pink).resolvedColor(with: traitCollection).cgColor
     }

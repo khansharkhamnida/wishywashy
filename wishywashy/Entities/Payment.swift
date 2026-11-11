@@ -12,7 +12,7 @@ enum PaymentStatus: String, Codable {
 }
 
 enum PaymentMethod: String, Codable {
-    case card, eWallet, applePay
+    case card, eWallet, applePay, payNow
 }
 
 struct Payment: Codable, Identifiable {
@@ -21,7 +21,8 @@ struct Payment: Codable, Identifiable {
     let userId: String
     let amount: Decimal
     let currency: String
-    let method: PaymentMethod
+    /// Nil when the payment provider has not told us which method was used
+    let method: PaymentMethod?
     var status: PaymentStatus
     let createdAt: Date
 }

@@ -14,6 +14,9 @@ class HomePresenter: HomePresenterProtocol, HomeInteractorOutputProtocol {
     weak var view: HomeViewProtocol?
     var interactor: HomeInteractorInputProtocol?
     var router: HomeRouterProtocol?
+
+    // Same order as the machine cards, so a tapped card maps to the right machine
+    private var machines: [Machine] = []
     
     private let priceFormatter: NumberFormatter = {
         let f = NumberFormatter()
@@ -32,25 +35,45 @@ class HomePresenter: HomePresenterProtocol, HomeInteractorOutputProtocol {
     
     // Conform to HomeInteractorOutputProtocol (Interactor → Presenter)
     func didFetchHomeData(_ data: HomeData) {
+        machines = data.machines
         view?.showUser(name: data.user.name)
         view?.showLaundromat(name: data.laundromat.name,
-                             isOperating: data.laundromat.isOpenNow ?? false)
+                             isOperating: data.laundromat.isOpenNow)
         view?.showMachines(data.machines.map(makeViewModel(from:)))
+        view?.showRefreshing(false)
     }
     
     //Conform to HomePresenterProtocol (View → Presenter).
     func viewDidLoad(){
         interactor?.fetchHomeData()
     }
+
+    // Reservations expire and cycles finish while Home is out of sight
+    func viewWillAppear() {
+        interactor?.fetchHomeData()
+    }
+
+    // Any working machine can be reserved now or booked for later; the Reserve sheet shows what is possible
+    func didSelectMachine(at index: Int) {
+        guard machines.indices.contains(index), machines[index].status != .outOfOrder else { return }
+        router?.navigateToReserve(machineId: machines[index].id) { [weak self] in
+            self?.interactor?.fetchHomeData()
+            self?.router?.showMyLaundry()
+        }
+    }
     
     //Conform to HomePresenterProtocol (View → Presenter).
     func didTapRefresh(){
-        interactor?.fetchHomeData()
+        view?.showRefreshing(true)
+        interactor?.refreshHomeData()
     }
     
     //Conform to HomePresenterProtocol (View → Presenter).
     func didTapChangeLocation(){
-        router?.navigateToLaundromatList()
+        // Reload so Home shows the laundromat that was just picked
+        router?.navigateToLaundromatList { [weak self] in
+            self?.interactor?.fetchHomeData()
+        }
     }
 
     func makeViewModel(from machine: Machine) -> MachineCardViewModel {

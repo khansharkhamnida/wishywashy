@@ -2,154 +2,227 @@
 //  LaundromatListViewController.swift
 //  wishywashy
 //
-//  UI only: static sample content.
+//  Lists laundromats with sort, search and selection.
 //
 
 import UIKit
 
-private struct LaundromatSample {
-    let name: String
-    let address: String
-    let distance: String
-    let rating: String
-    let status: String
-    let tone: Theme.Tone
-    let isSelected: Bool
-    let washersFree: Int
-    let dryersFree: Int
-}
-
 final class LaundromatListViewController: UIViewController {
-
-    private let laundromats = [
-        LaundromatSample(name: "WishyWash Tampines", address: "Blk 4 Tampines Street 11, Singapore",
-                         distance: "850 m away", rating: "★ 4.5", status: "Open", tone: .mint, isSelected: true,
-                         washersFree: 4, dryersFree: 2),
-        LaundromatSample(name: "WishyWash Orchard", address: "Somerset Road, Orchard, Singapore",
-                         distance: "2.3 km away", rating: "★ 4.2", status: "Closed", tone: .pink, isSelected: false,
-                         washersFree: 0, dryersFree: 0),
-        LaundromatSample(name: "WishyWash Jurong East", address: "Jurong Gateway Road, Jurong East, Singapore",
-                         distance: "7.8 km away", rating: "No ratings yet", status: "Open", tone: .mint, isSelected: false,
-                         washersFree: 6, dryersFree: 3),
-        LaundromatSample(name: "WishyWash Bugis", address: "Victoria Street, Bugis, Singapore",
-                         distance: "Unknown", rating: "★ 3.8", status: "Hours unknown", tone: .peach, isSelected: false,
-                         washersFree: 1, dryersFree: 0)
-    ]
-
-    private let tableView = UITableView(frame: .zero, style: .plain)
-
+    
+    var presenter: LaundromatListPresenterProtocol?
+    
+    private var laundromats: [LaundromatListViewModel] = []
+    private var currentSort: SortingCriteria = .distance
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeLayout())
+    private let searchController = UISearchController(searchResultsController: nil)
+    private let emptyLabel = UILabel()
+    private let noticeLabel = UILabel()
+    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let sortScrollView = UIScrollView()
+    private let sortStack = UIStackView()
+    private var sortButtons: [SortingCriteria: UIButton] = [:]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Choose Laundromat"
         navigationItem.largeTitleDisplayMode = .never
         view.backgroundColor = Theme.background
+        
+        collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
+        collectionView.register(LaundromatCell.self, forCellWithReuseIdentifier: LaundromatCell.identifier)
+        view.addSubview(collectionView)
+        
+        emptyLabel.font = Theme.font(16, .semibold)
+        emptyLabel.textColor = Theme.inkSoft
+        emptyLabel.textAlignment = .center
+        emptyLabel.numberOfLines = 0
 
-        tableView.backgroundColor = .clear
-        tableView.separatorStyle = .none
-        tableView.allowsSelection = false
-        tableView.dataSource = self
-        tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
-        tableView.register(LaundromatCell.self, forCellReuseIdentifier: LaundromatCell.identifier)
-        view.addSubview(tableView)
-        tableView.pin(to: view)
+        noticeLabel.font = Theme.font(13, .medium)
+        noticeLabel.textColor = Theme.inkSoft
+        noticeLabel.numberOfLines = 0
+        noticeLabel.isHidden = true
+
+        spinner.hidesWhenStopped = true
+        spinner.color = Theme.pink
+        
+        setupSearch()
+        setupSortChips()
+        
+        presenter?.viewDidLoad()
+    }
+    
+    private func setupSearch() {
+        // Searching a place hits the network, so it runs on Search instead of on every key
+        searchController.searchBar.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search a place or postal code"
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
+    }
+    
+    // A visible "Sort by" row of chips above the list
+    private func setupSortChips() {
+        sortStack.axis = .horizontal
+        sortStack.spacing = 8
+        sortStack.alignment = .center
+
+        let label = UILabel()
+        label.text = "Sort by"
+        label.font = Theme.font(14, .semibold)
+        label.textColor = Theme.inkSoft
+        sortStack.addArrangedSubview(label)
+
+        for criteria in SortingCriteria.allCases {
+            let button = UIButton(configuration: .filled())
+            button.addAction(UIAction { [weak self] _ in
+                guard let self, self.currentSort != criteria else { return }
+                self.currentSort = criteria
+                self.updateSortChipStyles()
+                self.presenter?.didSelectSort(criteria)
+            }, for: .touchUpInside)
+            sortButtons[criteria] = button
+            sortStack.addArrangedSubview(button)
+        }
+        updateSortChipStyles()
+
+        sortScrollView.showsHorizontalScrollIndicator = false
+        sortScrollView.alwaysBounceHorizontal = true
+        [sortScrollView, noticeLabel, collectionView, spinner].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
+        sortScrollView.addSubview(sortStack)
+        sortStack.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            sortScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            sortScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            sortScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            sortScrollView.heightAnchor.constraint(equalToConstant: 48),
+
+            sortStack.leadingAnchor.constraint(equalTo: sortScrollView.contentLayoutGuide.leadingAnchor, constant: 20),
+            sortStack.trailingAnchor.constraint(equalTo: sortScrollView.contentLayoutGuide.trailingAnchor, constant: -20),
+            sortStack.topAnchor.constraint(equalTo: sortScrollView.contentLayoutGuide.topAnchor),
+            sortStack.bottomAnchor.constraint(equalTo: sortScrollView.contentLayoutGuide.bottomAnchor),
+            sortStack.heightAnchor.constraint(equalTo: sortScrollView.frameLayoutGuide.heightAnchor),
+
+            noticeLabel.topAnchor.constraint(equalTo: sortScrollView.bottomAnchor),
+            noticeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            noticeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+
+            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            spinner.topAnchor.constraint(equalTo: noticeLabel.bottomAnchor, constant: 24),
+
+            collectionView.topAnchor.constraint(equalTo: noticeLabel.bottomAnchor, constant: 4),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+
+    private func updateSortChipStyles() {
+        for (criteria, button) in sortButtons {
+            let isOn = criteria == currentSort
+            var config = UIButton.Configuration.filled()
+            config.title = criteria.title
+            config.cornerStyle = .capsule
+            config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 14, bottom: 6, trailing: 14)
+            config.baseBackgroundColor = isOn ? Theme.pink : Theme.Tone.pink.soft
+            config.baseForegroundColor = isOn ? .white : Theme.ink
+            config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+                var attributes = attributes
+                attributes.font = Theme.font(14, isOn ? .bold : .semibold)
+                return attributes
+            }
+            button.configuration = config
+        }
+    }
+
+    private func makeLayout() -> UICollectionViewLayout {
+        var config = UICollectionLayoutListConfiguration(appearance: .plain)
+        config.backgroundColor = .clear
+        config.showsSeparators = false
+        return UICollectionViewCompositionalLayout.list(using: config)
     }
 }
 
-extension LaundromatListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { laundromats.count }
+private extension SortingCriteria {
+    var title: String {
+        switch self {
+        case .distance: return "Distance"
+        case .rating: return "Rating"
+        case .name: return "Name"
+        case .price: return "Price"
+        case .open: return "Open now"
+        }
+    }
+}
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: LaundromatCell.identifier, for: indexPath) as! LaundromatCell
-        let item = laundromats[indexPath.row]
+extension LaundromatListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        presenter?.didSearchLocation(searchBar.text ?? "")
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // Clearing the field goes back to laundromats near the user
+        if searchText.isEmpty { presenter?.didSearchLocation("") }
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        presenter?.didSearchLocation("")
+    }
+}
+
+extension LaundromatListViewController: UICollectionViewDelegate {
+    func collectionView(_ cv: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter?.didSelectLaundromat(at: indexPath.item)
+    }
+}
+
+extension LaundromatListViewController: UICollectionViewDataSource {
+    func collectionView(_ cv: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return laundromats.count
+    }
+    func collectionView(_ cv: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell =
+        collectionView.dequeueReusableCell(withReuseIdentifier: LaundromatCell.identifier, for: indexPath) as! LaundromatCell
+        let item = laundromats[indexPath.item]
         cell.configure(name: item.name, address: item.address, distance: item.distance, rating: item.rating,
-                       status: item.status, tone: item.tone, isSelected: item.isSelected,
+                       status: item.status, tone: item.tone, isSelected: item.isSelected, isSaved: item.isSaved, showsMachines: item.showsMachines,
                        washersFree: item.washersFree, dryersFree: item.dryersFree)
+        cell.onToggleSave = { [weak self] in self?.presenter?.didToggleSaved(at: indexPath.item) }
         return cell
     }
 }
 
-private final class LaundromatCell: UITableViewCell {
-    static let identifier = "LaundromatCell"
-
-    private let card = CardView()
-    private let awning = AwningView()
-    private let bubble = IconBubble()
-    private let nameLabel = UILabel()
-    private let addressLabel = UILabel()
-    private let distanceLabel = UILabel()
-    private let ratingLabel = UILabel()
-    private let statusBadge = BadgeLabel()
-    private let washersBadge = BadgeLabel()
-    private let dryersBadge = BadgeLabel()
-    private let checkImageView = UIImageView(image: UIImage(systemName: "checkmark.circle.fill"))
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .clear
-        selectionStyle = .none
-
-        nameLabel.font = Theme.font(18, .bold)
-        nameLabel.textColor = Theme.ink
-        addressLabel.font = Theme.font(14)
-        addressLabel.textColor = Theme.inkSoft
-        addressLabel.numberOfLines = 2
-        distanceLabel.font = Theme.font(14, .medium)
-        distanceLabel.textColor = Theme.inkSoft
-        ratingLabel.font = Theme.font(14, .semibold)
-        checkImageView.tintColor = Theme.pink
-        checkImageView.setContentHuggingPriority(.required, for: .horizontal)
-        bubble.configure(symbol: "mappin.and.ellipse", tone: .pink)
-
-        let nameRow = UIStackView(arrangedSubviews: [nameLabel, checkImageView])
-        nameRow.spacing = 8
-        nameRow.alignment = .center
-
-        let metaRow = UIStackView(arrangedSubviews: [statusBadge, distanceLabel, ratingLabel, UIView()])
-        metaRow.spacing = 10
-        metaRow.alignment = .center
-
-        let machinesRow = UIStackView(arrangedSubviews: [washersBadge, dryersBadge, UIView()])
-        machinesRow.spacing = 8
-        machinesRow.alignment = .center
-
-        let textStack = UIStackView(arrangedSubviews: [nameRow, addressLabel, metaRow, machinesRow])
-        textStack.axis = .vertical
-        textStack.spacing = 6
-        textStack.setCustomSpacing(10, after: addressLabel)
-
-        let row = UIStackView(arrangedSubviews: [bubble, textStack])
-        row.spacing = 14
-        row.alignment = .top
-
-        contentView.addSubview(card)
-        card.pin(to: contentView, insets: UIEdgeInsets(top: 6, left: 20, bottom: 6, right: 20))
-        card.addSubview(awning)
-        card.addSubview(row)
-        NSLayoutConstraint.activate([
-            awning.topAnchor.constraint(equalTo: card.topAnchor),
-            awning.leadingAnchor.constraint(equalTo: card.leadingAnchor),
-            awning.trailingAnchor.constraint(equalTo: card.trailingAnchor)
-        ])
-        row.pin(to: card, insets: UIEdgeInsets(top: AwningView.height + 14, left: 16, bottom: 16, right: 16))
+extension LaundromatListViewController: LaundromatListViewProtocol {
+    func showLoading(_ isLoading: Bool) {
+        isLoading ? spinner.startAnimating() : spinner.stopAnimating()
     }
 
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    func showLaundromats(_ items: [LaundromatListViewModel], notice: String?) {
+        laundromats = items
+        noticeLabel.text = notice
+        noticeLabel.isHidden = notice == nil
+        emptyLabel.text = "No laundromats found nearby.\nTry searching another place."
+        collectionView.backgroundView = items.isEmpty ? emptyLabel : nil
+        collectionView.reloadData()
+    }
 
-    func configure(name: String, address: String, distance: String, rating: String,
-                   status: String, tone: Theme.Tone, isSelected: Bool, washersFree: Int, dryersFree: Int) {
-        nameLabel.text = name
-        addressLabel.text = address
-        distanceLabel.text = distance
-        ratingLabel.text = rating
-        ratingLabel.textColor = rating.hasPrefix("★") ? Theme.Tone.peach.tint : Theme.inkSoft
-        statusBadge.configure(text: status, tone: tone)
-        washersBadge.configure(text: "\(washersFree) washers free", tone: washersFree > 0 ? .blue : .pink)
-        dryersBadge.configure(text: "\(dryersFree) dryers free", tone: dryersFree > 0 ? .lilac : .pink)
-        checkImageView.isHidden = !isSelected
-        card.isEmphasized = isSelected
+    func showError(_ message: String) {
+        laundromats = []
+        noticeLabel.isHidden = true
+        emptyLabel.text = message
+        collectionView.backgroundView = emptyLabel
+        collectionView.reloadData()
     }
 }
 
 #Preview {
-    UINavigationController(rootViewController: LaundromatListViewController())
+    UINavigationController(rootViewController: LaundromatListRouter.createModule())
 }

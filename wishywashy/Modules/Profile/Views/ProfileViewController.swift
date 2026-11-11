@@ -2,52 +2,32 @@
 //  ProfileViewController.swift
 //  wishywashy
 //
-//  UI only: static sample content.
+//  Header, stats and menu for the signed-in user.
 //
 
 import UIKit
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: ProfilePageViewController {
 
-    private let scrollView = UIScrollView()
-    private let contentStack = UIStackView()
+    var presenter: ProfilePresenterProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Profile"
-        view.backgroundColor = Theme.background
+        presenter?.viewDidLoad()
+    }
 
-        contentStack.axis = .vertical
-        contentStack.spacing = 20
-        contentStack.addArrangedSubview(makeHeaderCard())
-        contentStack.addArrangedSubview(makeStatsCard())
-        contentStack.addArrangedSubview(makeMenuCard())
-
-        scrollView.alwaysBounceVertical = true
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentStack)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentStack.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
-            contentStack.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 8),
-            contentStack.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -24),
-            contentStack.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 20),
-            contentStack.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -20)
-        ])
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter?.viewWillAppear()
     }
 
     // MARK: - Sections
-    private func makeHeaderCard() -> UIView {
+    private func makeHeaderCard(_ model: ProfileViewModel) -> UIView {
         let card = GradientView()
 
         let avatar = UILabel()
-        avatar.text = "S"
+        avatar.text = model.initial
         avatar.font = Theme.font(34, .heavy)
         avatar.textColor = Theme.gradientStart
         avatar.textAlignment = .center
@@ -61,12 +41,12 @@ final class ProfileViewController: UIViewController {
         ])
 
         let name = UILabel()
-        name.text = "Shofia"
+        name.text = model.name
         name.font = Theme.font(26, .heavy)
         name.textColor = .white
 
         let email = UILabel()
-        email.text = "shofia@example.com"
+        email.text = model.email
         email.font = Theme.font(15, .medium)
         email.textColor = UIColor.white.withAlphaComponent(0.9)
 
@@ -89,12 +69,9 @@ final class ProfileViewController: UIViewController {
         return card
     }
 
-    private func makeStatsCard() -> UIView {
+    private func makeStatsCard(_ stats: [ProfileStatViewModel]) -> UIView {
         let card = CardView()
-        let stats: [(String, String, Theme.Tone)] = [
-            ("8", "Bookings", .pink), ("5", "Completed", .mint), ("S$26", "Spent", .lilac)
-        ]
-        let row = UIStackView(arrangedSubviews: stats.map { makeStat(value: $0.0, title: $0.1, tone: $0.2) })
+        let row = UIStackView(arrangedSubviews: stats.map { makeStat(value: $0.value, title: $0.title, tone: $0.tone) })
         row.distribution = .fillEqually
         card.addSubview(row)
         row.pin(to: card, insets: UIEdgeInsets(top: 16, left: 8, bottom: 16, right: 8))
@@ -119,66 +96,26 @@ final class ProfileViewController: UIViewController {
     }
 
     private func makeMenuCard() -> UIView {
-        let card = CardView()
-        let items: [(String, String, Theme.Tone)] = [
-            ("Payment Methods", "creditcard.fill", .pink),
-            ("Saved Laundromats", "heart.fill", .peach),
-            ("Notifications", "bell.fill", .blue),
-            ("Help & Support", "questionmark.bubble.fill", .lilac)
+        let items: [(title: String, symbol: String, tone: Theme.Tone, item: ProfileMenuItem)] = [
+            ("Payment Methods", "creditcard.fill", .pink, .paymentMethods),
+            ("Saved Laundromats", "heart.fill", .peach, .savedLaundromats),
+            ("Notifications", "bell.fill", .blue, .notifications),
+            ("Help & Support", "questionmark.bubble.fill", .lilac, .help)
         ]
-        let stack = UIStackView()
-        stack.axis = .vertical
-        for (index, item) in items.enumerated() {
-            if index > 0 {
-                let divider = UIView()
-                divider.backgroundColor = Theme.stroke
-                divider.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
-                let wrapper = UIView()
-                wrapper.addSubview(divider)
-                divider.pin(to: wrapper, insets: UIEdgeInsets(top: 0, left: 76, bottom: 0, right: 16))
-                stack.addArrangedSubview(wrapper)
-            }
-            let row = makeRow(title: item.0, symbol: item.1, tone: item.2)
-            if item.0 == "Saved Laundromats" {
-                row.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openLaundromats)))
-            }
-            stack.addArrangedSubview(row)
-        }
-        card.addSubview(stack)
-        stack.pin(to: card, insets: UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
-        return card
+        return ProfileUI.card(rows: items.map { entry in
+            ProfileRowView(title: entry.title, symbol: entry.symbol, tone: entry.tone,
+                           accessory: ProfileUI.chevron(),
+                           onTap: { [weak self] in self?.presenter?.didSelectMenuItem(entry.item) })
+        })
     }
+}
 
-    // UI-only navigation until a router exists
-    @objc private func openLaundromats() {
-        let list = LaundromatListViewController()
-        list.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(list, animated: true)
-    }
-
-    private func makeRow(title: String, symbol: String, tone: Theme.Tone) -> UIView {
-        let bubble = IconBubble(size: 44, symbolSize: 18)
-        bubble.configure(symbol: symbol, tone: tone)
-
-        let label = UILabel()
-        label.text = title
-        label.font = Theme.font(17, .semibold)
-        label.textColor = Theme.ink
-
-        let chevron = UIImageView(image: UIImage(systemName: "chevron.right"))
-        chevron.tintColor = Theme.inkSoft
-        chevron.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
-        chevron.setContentHuggingPriority(.required, for: .horizontal)
-
-        let row = UIStackView(arrangedSubviews: [bubble, label, chevron])
-        row.spacing = 16
-        row.alignment = .center
-        row.isLayoutMarginsRelativeArrangement = true
-        row.layoutMargins = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
-        return row
+extension ProfileViewController: ProfileViewProtocol {
+    func showProfile(_ model: ProfileViewModel) {
+        setContent([makeHeaderCard(model), makeStatsCard(model.stats), makeMenuCard()])
     }
 }
 
 #Preview {
-    UINavigationController(rootViewController: ProfileViewController())
+    UINavigationController(rootViewController: ProfileRouter.createModule())
 }

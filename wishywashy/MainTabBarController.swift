@@ -14,9 +14,9 @@ final class MainTabBarController: UITabBarController {
         Theme.styleTabBar(tabBar)
         viewControllers = [
             makeTab(HomeRouter.createModule(), title: "Home", image: "house", selectedImage: "house.fill", largeTitle: false),
-            makeTab(BookingsViewController(), title: "Bookings", image: "calendar", selectedImage: "calendar"),
-            makeTab(MyLaundryViewController(), title: "My Laundry", image: "washer", selectedImage: "washer.fill"),
-            makeTab(ProfileViewController(), title: "Profile", image: "person", selectedImage: "person.fill")
+            makeTab(BookingsRouter.createModule(), title: "Bookings", image: "calendar", selectedImage: "calendar"),
+            makeTab(MyLaundryRouter.createModule(), title: "My Laundry", image: "washer", selectedImage: "washer.fill"),
+            makeTab(ProfileRouter.createModule(), title: "Profile", image: "person", selectedImage: "person.fill")
         ]
     }
 

@@ -2,35 +2,89 @@
 //  LaundromatListPresenter.swift
 //  wishywashy
 //
-//  Created by Shofia Ghazali on 3/11/26.
-//
-/*
- protocol LaundromatListPresenterProtocol: AnyObject {
- func viewDidLoad()
- func didTapRetry()
- func didSelectLaundromat(at index: Int)
- // later: didChangeSearchText(_:), didTapFilter()
- }
- 
- class LaundromatListPresenter{
- private weak var view: LaundromatListViewProtocol?   // weak
- private let interactor: LaundromatListInteractorInputProtocol
- private let router: LaundromatListRouterProtocol
- 
- // LaundromatListInteractorOutputProtocol
- func didFetchLaundromats(_ laundromats: [Laundromat])
- func didFail(with error: Error)
- 
- /*
-  Tell the View which state to show: loading, list, empty, error.
-  Convert Laundromat into a view model with display strings, e.g. distanceMeters 850 becomes "850 m", isOpenNow becomes "Open" or "Closed", and rating becomes "4.5 ★".
-  Turn errors into user-friendly messages (location denied, no internet, nothing found).
-  Keep a copy of the fetched [Laundromat], so didSelectLaundromat(at:) can find the right entity to pass to the Router.
-  */
- 
- func didSelectLaundromat(at index: Int) {
- router.navigateToDetail(with: laundromats[index])
- }
- }
- 
- */
+
+import Foundation
+
+final class LaundromatListPresenter: LaundromatListPresenterProtocol, LaundromatListInteractorOutputProtocol {
+
+    weak var view: LaundromatListViewProtocol?
+    var interactor: LaundromatListInteractorInputProtocol?
+    var router: LaundromatListRouterProtocol?
+
+    // Same order as what the view shows, so an index maps to the right entity
+    private var laundromats: [Laundromat] = []
+
+    func viewDidLoad() {
+        interactor?.fetchLaundromats()
+    }
+
+    func didSelectSort(_ criteria: SortingCriteria) {
+        interactor?.sortLaundromats(by: criteria)
+    }
+
+    func didSearchLocation(_ query: String) {
+        interactor?.searchLocation(query)
+    }
+
+    func didToggleSaved(at index: Int) {
+        guard laundromats.indices.contains(index) else { return }
+        interactor?.toggleSaved(id: laundromats[index].id)
+    }
+
+    func didSelectLaundromat(at index: Int) {
+        guard laundromats.indices.contains(index) else { return }
+        interactor?.selectLaundromat(id: laundromats[index].id)
+        router?.close()
+    }
+
+    // LaundromatListInteractorOutputProtocol
+    func didStartLoading() {
+        view?.showLoading(true)
+    }
+
+    func didFetchLaundromats(_ result: LaundromatListResult) {
+        laundromats = result.laundromats
+        view?.showLoading(false)
+        view?.showLaundromats(result.laundromats.map { makeViewModel(from: $0, result: result) }, notice: result.notice)
+    }
+
+    func didFail(message: String) {
+        laundromats = []
+        view?.showLoading(false)
+        view?.showError(message)
+    }
+
+    private func makeViewModel(from laundromat: Laundromat, result: LaundromatListResult) -> LaundromatListViewModel {
+        let (status, tone) = statusText(for: laundromat.isOpenNow)
+        return LaundromatListViewModel(
+            name: laundromat.name,
+            address: laundromat.address,
+            distance: distanceText(laundromat.distanceMeters),
+            rating: laundromat.rating.map { "★ \(String(format: "%.1f", $0))" } ?? (laundromat.isPartner ? "New" : ""),
+            status: status,
+            tone: tone,
+            isSelected: laundromat.id == result.selectedId,
+            isSaved: result.savedIds.contains(laundromat.id),
+            showsMachines: laundromat.isPartner,
+            washersFree: freeCount(of: .washer, in: laundromat),
+            dryersFree: freeCount(of: .dryer, in: laundromat)
+        )
+    }
+
+    private func statusText(for isOpen: Bool?) -> (String, Theme.Tone) {
+        switch isOpen {
+        case true: return ("Open", .mint)
+        case false: return ("Closed", .pink)
+        default: return ("Hours unknown", .lilac)
+        }
+    }
+
+    private func distanceText(_ meters: Double?) -> String {
+        guard let meters else { return "Distance unknown" }
+        return meters < 1000 ? "\(Int(meters)) m" : String(format: "%.1f km", meters / 1000)
+    }
+
+    private func freeCount(of type: MachineType, in laundromat: Laundromat) -> Int {
+        laundromat.machines.filter { $0.type == type && $0.status == .available }.count
+    }
+}

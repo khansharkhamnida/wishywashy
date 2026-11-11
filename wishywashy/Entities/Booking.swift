@@ -22,4 +22,13 @@ struct Booking: Codable, Identifiable {
     var totalPrice: Decimal
     var paymentId: String?
     let createdAt: Date
+    /// Set while a reservation is held; the machine is released if the user has not checked in by then
+    var holdExpiresAt: Date?
+}
+
+/// A booking together with the machine and laundromat it refers to.
+struct BookingDetail {
+    let booking: Booking
+    let machine: Machine?
+    let laundromat: Laundromat?
 }

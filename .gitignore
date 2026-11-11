@@ -1,0 +1,8 @@
+.DS_Store
+build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+.swiftpm/
+*.xcworkspace/xcshareddata/swiftpm/
+node_modules/
