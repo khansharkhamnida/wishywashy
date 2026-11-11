@@ -2,7 +2,17 @@
 
 A bubblegum-modern iOS app for finding and booking washers and dryers at self-service laundromats around Singapore. Built with UIKit.
 
-> **Status:** the UI is done. Home, Bookings, My Laundry, Profile and Choose Laundromat each run through their own VIPER module on mock data. Bookings, My Laundry and Profile read one shared list of mock bookings. The three mini games are fully playable. Real app data and logic come next.
+## What it is
+
+WishyWashy lets people **find, reserve and pay for a washer or dryer** at a self-service laundromat, so they do not
+turn up to find every machine busy. You see which machines are free, reserve one now or for later, get told when to
+leave so you arrive on time, check in at the machine, pay, and watch the cycle run. Three mini games keep you busy
+while you wait.
+
+> **Status:** a complete iOS app on **sample data**. Reservations, check-in, the payment flow, arrive-on-time
+> reminders, bookings, profile and the games all work, and the booking rules have unit tests. There is no server yet:
+> laundromats, machines, bookings and payments are simulated on the device. The plan for real data, real payments,
+> machine integrations and Android is in [`docs/PRODUCT_AND_BACKEND_PLAN.md`](docs/PRODUCT_AND_BACKEND_PLAN.md).
 
 ## Screenshots
 
@@ -169,13 +179,31 @@ Screens talk to a `BookingService` protocol. `LocalBookingService` answers on th
 
 ## Roadmap
 
-- [x] Connect Bookings, My Laundry, Profile and Choose Laundromat to presenters, interactors and routers
-- [x] Make laundromat selection update Home
-- [x] Reserve now, finishing-soon and later bookings on mock data (reserve, check in, cancel, expiry, overlap checks)
-- [x] Mock bookings and machines are saved on the device
+Done:
+
+- [x] Home, Bookings, My Laundry, Profile and Choose Laundromat, each as its own VIPER module
+- [x] Reserve now, finishing-soon and later bookings, with check-in, free cancel, expiry and overlap checks
+- [x] Payment at check-in with a test sheet, and a refund if the machine is lost while paying
 - [x] Arrive-on-time check with a leave reminder
-- [x] Payment at check-in with a test sheet
-- [ ] Real payment provider, hosted server, and a server-side overlap check
+- [x] Three mini games
+- [x] Services layer behind protocols, so a server can replace the on-device logic without touching any screen
+- [x] Unit tests for the booking rules
+
+Next (the full reasoning, data model, payments, Android and a phased checklist are in
+[`docs/PRODUCT_AND_BACKEND_PLAN.md`](docs/PRODUCT_AND_BACKEND_PLAN.md)):
+
+- [ ] **Server and database:** Postgres, sign-in with phone OTP and Sign in with Apple, booking API, a database
+  constraint that makes double-booking impossible, and a worker that expires holds
+- [ ] **`RemoteBookingService`** in the app, behind the existing `BookingService` protocol
+- [ ] **Real users:** accounts, Keychain tokens, account deletion
+- [ ] **Per-laundromat settings:** opening hours, time zone and currency (the app is hard-coded to S$ today)
+- [ ] **One pilot laundromat:** owner dashboard, staff screen, QR check-in, machine status that says "Estimated" or "Live"
+- [ ] **Machine integrations:** a capability model, adapters for cloud APIs, retrofit controllers and manual machines
+- [ ] **Real payments** for Singapore (PayNow, cards, wallets) and the Philippines (GCash, Maya, cash), with webhooks,
+  refunds and a ledger
+- [ ] **Cash handling** for manned shops: staff app, shift reconciliation
+- [ ] **Monetisation:** booking fee, subscription for manned shops, commission for unmanned
+- [ ] **Server push notifications** instead of local ones
+- [ ] **Android app** (native Kotlin and Jetpack Compose) on the same API
 - [ ] Laundromat details page
-- [ ] Real data source
 - [ ] Trigger the games from a running cycle, for example when a wash is about to finish
