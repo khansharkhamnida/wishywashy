@@ -1,0 +1,12 @@
+{
+  "name": "wishywashy-backend",
+  "private": true,
+  "description": "Supabase backend for WishyWashy: migrations, seed data and SQL tests",
+  "scripts": {
+    "test": "node tests/run.mjs"
+  },
+  "devDependencies": {
+    "embedded-postgres": "^17.5.0-beta.15",
+    "pg": "^8.13.0"
+  }
+}
