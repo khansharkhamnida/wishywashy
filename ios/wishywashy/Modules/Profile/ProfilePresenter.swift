@@ -17,6 +17,10 @@ final class ProfilePresenter: ProfilePresenterProtocol, ProfileInteractorOutputP
         router?.navigate(to: item)
     }
 
+    func didConfirmSignOut() {
+        interactor?.signOut()
+    }
+
     // ProfileInteractorOutputProtocol
     func didFetchProfile(_ data: ProfileData) {
         view?.showProfile(ProfileViewModel(
@@ -27,6 +31,7 @@ final class ProfilePresenter: ProfilePresenterProtocol, ProfileInteractorOutputP
                 ProfileStatViewModel(value: "\(data.totalBookings)", title: "Bookings", tone: .pink),
                 ProfileStatViewModel(value: "\(data.completedBookings)", title: "Completed", tone: .mint),
                 ProfileStatViewModel(value: Money.string(data.totalSpent), title: "Spent", tone: .lilac)
-            ]))
+            ],
+            canSignOut: interactor?.canSignOut ?? false))
     }
 }

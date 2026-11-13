@@ -9,9 +9,18 @@ final class ProfileInteractor: ProfileInteractorInputProtocol {
     weak var output: ProfileInteractorOutputProtocol?
 
     private let bookings: BookingService
+    private let auth: AuthService
 
-    init(bookings: BookingService = Services.bookings) {
+    init(bookings: BookingService = Services.bookings, auth: AuthService = Services.auth) {
         self.bookings = bookings
+        self.auth = auth
+    }
+
+    var canSignOut: Bool { auth.requiresSignIn }
+
+    /// Signing out changes the auth state, and `SceneDelegate` then swaps the tab bar for the login screen
+    func signOut() {
+        Task { await auth.signOut() }
     }
 
     func fetchProfile() {

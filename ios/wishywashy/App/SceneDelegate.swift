@@ -10,6 +10,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    private var authObserver: NSObjectProtocol?
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -18,8 +19,41 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = MainTabBarController()
+        guard Services.auth.requiresSignIn else {
+            // Sample mode: no login, straight to the tab bar
+            window?.rootViewController = MainTabBarController()
+            window?.makeKeyAndVisible()
+            return
+        }
+
+        window?.rootViewController = SplashViewController()
         window?.makeKeyAndVisible()
+        authObserver = NotificationCenter.default.addObserver(forName: .authStateDidChange, object: nil,
+                                                              queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.showRoot(animated: true) }
+        }
+        Task {
+            _ = await Services.auth.restoreSession()
+            showRoot(animated: false)
+        }
+    }
+
+    /// Live mode: the tab bar when someone is signed in, the login flow when not
+    private func showRoot(animated: Bool) {
+        guard let window else { return }
+        let signedIn = Services.auth.currentUser != nil
+        let showsTabBar = window.rootViewController is MainTabBarController
+        let showsAuthFlow = window.rootViewController is UINavigationController
+        if signedIn ? showsTabBar : showsAuthFlow { return }
+
+        let root: UIViewController = signedIn ? MainTabBarController() : AuthRouter.createModule()
+        guard animated else {
+            window.rootViewController = root
+            return
+        }
+        UIView.transition(with: window, duration: 0.35, options: .transitionCrossDissolve) {
+            window.rootViewController = root
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

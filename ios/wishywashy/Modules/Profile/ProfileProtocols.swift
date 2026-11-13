@@ -20,6 +20,8 @@ struct ProfileViewModel {
     let name: String
     let email: String
     let stats: [ProfileStatViewModel]
+    /// Only live mode has accounts, so sample mode shows no sign-out row
+    let canSignOut: Bool
 }
 
 // Presenter -> View
@@ -32,11 +34,14 @@ protocol ProfilePresenterProtocol: AnyObject {
     func viewDidLoad()
     func viewWillAppear()
     func didSelectMenuItem(_ item: ProfileMenuItem)
+    func didConfirmSignOut()
 }
 
 // Presenter -> Interactor
 protocol ProfileInteractorInputProtocol: AnyObject {
     func fetchProfile()
+    var canSignOut: Bool { get }
+    func signOut()
 }
 
 // Interactor -> Presenter

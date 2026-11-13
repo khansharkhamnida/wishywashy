@@ -10,7 +10,7 @@ import UIKit
 /// Scrolling page with a vertical stack, used by Profile and every page opened from it.
 class ProfilePageViewController: UIViewController {
 
-    private let scrollView = UIScrollView()
+    let scrollView = UIScrollView()
     private let contentStack = UIStackView()
 
     override func viewDidLoad() {

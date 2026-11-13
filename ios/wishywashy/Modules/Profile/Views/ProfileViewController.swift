@@ -108,11 +108,31 @@ final class ProfileViewController: ProfilePageViewController {
                            onTap: { [weak self] in self?.presenter?.didSelectMenuItem(entry.item) })
         })
     }
+
+    private func makeSignOutCard() -> UIView {
+        ProfileUI.card(rows: [
+            ProfileRowView(title: "Sign Out", symbol: "rectangle.portrait.and.arrow.right", tone: .peach,
+                           onTap: { [weak self] in self?.confirmSignOut() })
+        ])
+    }
+
+    private func confirmSignOut() {
+        let alert = UIAlertController(title: "Sign out?",
+                                      message: "You can sign back in any time.",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive) { [weak self] _ in
+            self?.presenter?.didConfirmSignOut()
+        })
+        present(alert, animated: true)
+    }
 }
 
 extension ProfileViewController: ProfileViewProtocol {
     func showProfile(_ model: ProfileViewModel) {
-        setContent([makeHeaderCard(model), makeStatsCard(model.stats), makeMenuCard()])
+        var sections = [makeHeaderCard(model), makeStatsCard(model.stats), makeMenuCard()]
+        if model.canSignOut { sections.append(makeSignOutCard()) }
+        setContent(sections)
     }
 }
 
