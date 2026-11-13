@@ -1,0 +1,19 @@
+README.md
+  s_c1616dbe193969::t_4d4b300988f2d5 5-15,182-186,188-207
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8c95d1bc4b245a475a6a110b85b5416d25b74190",
+  "prompts": {},
+  "sessions": {
+    "s_c1616dbe193969": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "2f4498a8-a25e-4316-ad59-190ee305a9f5",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    }
+  }
+}

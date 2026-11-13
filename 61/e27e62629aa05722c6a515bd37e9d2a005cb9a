@@ -1,0 +1,37 @@
+docs/dev/ARCHITECTURE.md
+  s_6509ed6f55ec1c::t_fc7c822c798c58 1-399
+README.md
+  s_c1616dbe193969::t_5d475069fdc4f9 117,151
+  s_6509ed6f55ec1c::t_a7818830f66f2d 15,158,168,229-233
+  s_6509ed6f55ec1c::t_0ed7906c6cfac1 14
+  s_c1616dbe193969::t_63dd43fbda33a7 156-157,159,167
+  s_c1616dbe193969::t_47bc9379ff00d3 153-155,160-166,169-173,205,209-215
+  s_6509ed6f55ec1c::t_169d024a2fe0ed 216
+docs/dev/AUTH_IMPLEMENTATION.md
+  s_6509ed6f55ec1c::t_0ed7906c6cfac1 89
+  s_6509ed6f55ec1c::t_fc7c822c798c58 1-88,90-131
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "61e27e62629aa05722c6a515bd37e9d2a005cb9a",
+  "prompts": {},
+  "sessions": {
+    "s_6509ed6f55ec1c": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "cdfe4014-35f2-467e-bdba-ba1a253656df",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    },
+    "s_c1616dbe193969": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "2f4498a8-a25e-4316-ad59-190ee305a9f5",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    }
+  }
+}
