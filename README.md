@@ -11,8 +11,8 @@ while you wait.
 
 > **Status:** a complete iOS app on **sample data**. Reservations, check-in, the payment flow, arrive-on-time
 > reminders, bookings, profile and the games all work, and the booking rules have unit tests. There is no server yet:
-> laundromats, machines, bookings and payments are simulated on the device. The plan for real data, real payments,
-> machine integrations and Android is in [`docs/PRODUCT_AND_BACKEND_PLAN.md`](docs/PRODUCT_AND_BACKEND_PLAN.md).
+> laundromats, machines, bookings and payments are simulated on the device. The split between frontend and backend is in
+> [`docs/dev/ARCHITECTURE.md`](docs/dev/ARCHITECTURE.md).
 
 ## Screenshots
 
@@ -114,7 +114,7 @@ Reached from the **Play while you wait** card on My Laundry. The hub lists three
 - **Laundry Sort:** tap the Lights, Darks or Colors basket for the lowest falling item before it hits the bottom. It speeds up as you score, and you have three lives.
 
 #### Built with GameplayKit
-Shared pieces live in [`Modules/Games/Gameplay/`](wishywashy/Modules/Games/Gameplay).
+Shared pieces live in [`Modules/Games/Gameplay/`](ios/wishywashy/Modules/Games/Gameplay).
 
 - **State machines** (`GKStateMachine`): ready, playing and over for the arcade games, and a round flow for Sock Match (peeking, picking, resolving, won, lost). Delayed work such as the flip-back is dropped when the state moves on.
 - **Entities and components** (`GKEntity`, `GKComponentSystem`): bubbles and garments are entities with view, motion, score and tone components.
@@ -148,9 +148,29 @@ Shared pieces live in [`Modules/Games/Gameplay/`](wishywashy/Modules/Games/Gamep
 - **Type:** rounded system font
 - **Cartoon details:** thick plum outlines, hard pink "sticker" shadows, striped scalloped shop awnings and washing machine portholes
 - **Dark mode:** supported throughout
-- The design system lives in [`Shared/`](wishywashy/Shared): `Theme.swift` (colors, fonts, bar styling), `CardView.swift` (cards, gradient hero, icon bubble, progress bar) and `LaundryDecor.swift` (awning and porthole). The game-only views (score pills, game-over card) live in `Modules/Games/Support/`
+- The design system lives in [`Shared/`](ios/wishywashy/Shared): `Theme.swift` (colors, fonts, bar styling), `CardView.swift` (cards, gradient hero, icon bubble, progress bar) and `LaundryDecor.swift` (awning and porthole). The game-only views (score pills, game-over card) live in `Modules/Games/Support/`
 
-## Project structure
+## Architecture
+
+The repo has two sides. The **frontend** is the app people hold. The **backend** decides and remembers: it enforces the
+booking rules, keeps the data and handles the money. **The app does not use the backend yet.** It still runs on sample
+data and plays the part of the backend itself. The backend (database, booking rules and security, with tests) is written
+and has a step-by-step guide in [`backend/README.md`](backend/README.md). See [`docs/dev/ARCHITECTURE.md`](docs/dev/ARCHITECTURE.md)
+for the diagrams, who is responsible for what, and how the frontend moves to the real backend.
+
+```
+.
+├── ios/               FRONTEND: the iOS app (UIKit, VIPER)
+│   ├── wishywashy.xcodeproj
+│   ├── wishywashy/      App source, described below
+│   └── wishywashyTests/ Unit tests for the booking rules
+├── backend/           BACKEND: Supabase database, rules and tests (not connected to the app yet)
+└── docs/              Developer docs (docs/dev) and screenshots
+```
+
+## iOS app structure
+
+Everything below is inside `ios/wishywashy/`.
 
 ```
 wishywashy/
@@ -180,12 +200,19 @@ wishywashy/
 
 Screens talk to a `BookingService` protocol. `LocalBookingService` answers on the device today, and a server version can replace it without touching any screen.
 
-
 ## Getting started
 
-1. Open `wishywashy.xcodeproj` in Xcode.
+1. Open `ios/wishywashy.xcodeproj` in Xcode.
 2. Pick an iPhone simulator (the deployment target is iOS 26).
 3. Press **Run**.
+
+To run the tests from the terminal:
+
+```bash
+cd ios
+xcodebuild test -project wishywashy.xcodeproj -scheme wishywashy \
+  -destination 'platform=iOS Simulator,name=iPhone 17' CODE_SIGNING_ALLOWED=NO
+```
 
 ## Roadmap
 
@@ -199,21 +226,10 @@ Done:
 - [x] Services layer behind protocols, so a server can replace the on-device logic without touching any screen
 - [x] Unit tests for the booking rules
 
-Next (the full reasoning, data model, payments, Android and a phased checklist are in
-[`docs/PRODUCT_AND_BACKEND_PLAN.md`](docs/PRODUCT_AND_BACKEND_PLAN.md)):
+Next:
 
-- [ ] **Server and database:** Postgres, sign-in with phone OTP and Sign in with Apple, booking API, a database
-  constraint that makes double-booking impossible, and a worker that expires holds
-- [ ] **`RemoteBookingService`** in the app, behind the existing `BookingService` protocol
-- [ ] **Real users:** accounts, Keychain tokens, account deletion
-- [ ] **Per-laundromat settings:** opening hours, time zone and currency (the app is hard-coded to S$ today)
-- [ ] **One pilot laundromat:** owner dashboard, staff screen, QR check-in, machine status that says "Estimated" or "Live"
-- [ ] **Machine integrations:** a capability model, adapters for cloud APIs, retrofit controllers and manual machines
-- [ ] **Real payments** for Singapore (PayNow, cards, wallets) and the Philippines (GCash, Maya, cash), with webhooks,
-  refunds and a ledger
-- [ ] **Cash handling** for manned shops: staff app, shift reconciliation
-- [ ] **Monetisation:** booking fee, subscription for manned shops, commission for unmanned
-- [ ] **Server push notifications** instead of local ones
-- [ ] **Android app** (native Kotlin and Jetpack Compose) on the same API
+- [ ] Connect the app to a real server, with real accounts
+- [ ] Real payments
+- [ ] Live machine status
 - [ ] Laundromat details page
 - [ ] Trigger the games from a running cycle, for example when a wash is about to finish
