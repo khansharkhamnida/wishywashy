@@ -1,0 +1,19 @@
+docs/index.html
+  s_aab245703a8c44::t_9929923803398e 1-454
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "546ea5e467ea476c846259235c49b26b4071980d",
+  "prompts": {},
+  "sessions": {
+    "s_aab245703a8c44": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "081a4d4d-936d-4f6f-ad80-41d3e35ce8cb",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    }
+  }
+}
