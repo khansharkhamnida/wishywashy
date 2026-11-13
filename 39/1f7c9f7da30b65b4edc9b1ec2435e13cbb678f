@@ -1,0 +1,56 @@
+.gitignore
+  s_6509ed6f55ec1c::t_05d53f134d2206 15-18
+  s_c1616dbe193969::t_561486a281b7d6 9-14
+  s_6509ed6f55ec1c::t_1ec89231390a70 19-21
+  s_6509ed6f55ec1c::t_eb4d1c1f06545d 22
+ios/wishywashy/Modules/Profile/Views/ProfileComponents.swift
+  s_7964f6a1c3fe86::t_91cc82f22ba181 1-147
+ios/wishywashy/Services/Session.swift
+  s_7964f6a1c3fe86::t_52b4c64e3e7f5e 1-14
+ios/wishywashy/Modules/Profile/ProfilePresenter.swift
+  s_6509ed6f55ec1c::t_d0705dd01b43c9 1-31
+ios/wishywashy/App/SceneDelegate.swift
+  s_7964f6a1c3fe86::t_01ec7364bbbffc 1-55
+ios/wishywashy/Modules/Profile/ProfileProtocols.swift
+  s_6509ed6f55ec1c::t_d0705dd01b43c9 1-51
+ios/wishywashy/Modules/Profile/Views/ProfileViewController.swift
+  s_6509ed6f55ec1c::t_33bd35c2cf9645 1-120
+ios/wishywashy/Entities/User.swift
+  s_6509ed6f55ec1c::t_cf3345554ff6b7 1-15
+ios/wishywashy/Modules/Profile/ProfileInteractor.swift
+  s_6509ed6f55ec1c::t_d0705dd01b43c9 1-26
+ios/wishywashy/Services/Services.swift
+  s_7964f6a1c3fe86::t_52b4c64e3e7f5e 1-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "391f7c9f7da30b65b4edc9b1ec2435e13cbb678f",
+  "prompts": {},
+  "sessions": {
+    "s_6509ed6f55ec1c": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "cdfe4014-35f2-467e-bdba-ba1a253656df",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    },
+    "s_7964f6a1c3fe86": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "8488570b-4ea2-46fd-8927-4e71c1572af2",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    },
+    "s_c1616dbe193969": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "2f4498a8-a25e-4316-ad59-190ee305a9f5",
+        "model": "unknown"
+      },
+      "human_author": "khansharkhamnida <kzsghazali.kzsg@gmail.com>"
+    }
+  }
+}
