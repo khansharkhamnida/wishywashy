@@ -125,6 +125,19 @@
   .game p { margin: 0; color: var(--muted); font-size: .96rem; }
 
   /* tech */
+  .fw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 22px; margin-top: 30px; }
+  .fw { padding: 24px; }
+  .fw:first-child { grid-column: 1 / -1; }
+  .fw-tag { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; border: 2px solid var(--plum); border-radius: 999px; padding: 1px 10px; margin-bottom: 10px; background: var(--lilac); }
+  .fw:nth-child(3n+2) .fw-tag { background: var(--blue); }
+  .fw:nth-child(3n+3) .fw-tag { background: var(--mint); }
+  .fw h3 { font-size: 1.35rem; margin-bottom: 6px; }
+  .fw .plain { margin: 0 0 10px; font-size: 1.02rem; }
+  .fw ul { margin: 0; padding-left: 20px; color: var(--muted); font-size: .95rem; }
+  .fw li { margin: 6px 0; }
+  .fw li b { color: var(--plum); }
+  .fw code { overflow-wrap: anywhere; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
   .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
   .chip { border: 2px solid var(--plum); border-radius: 999px; padding: 6px 16px; font-weight: 700; font-size: .9rem; background: var(--card); }
   .chip:nth-child(3n+1) { background: var(--pink-soft); }
@@ -360,36 +373,101 @@
 
   <section id="tech">
     <h2>Under the hood</h2>
-    <p class="lead">A UIKit app with a VIPER structure, a services layer behind protocols, and a Supabase backend that is written and tested but not connected yet.</p>
+    <p class="lead">The interesting bits, in plain words first and the proper jargon underneath.</p>
+
+    <div class="fw-grid">
+      <article class="sticker fw">
+        <span class="fw-tag">Games</span>
+        <h3>GameplayKit</h3>
+        <p class="plain">Apple's toolbox for game brains. It decides what the bubbles and socks <em>do</em>, so the games feel alive and fair.</p>
+        <ul>
+          <li><b>Bubbles that don't bunch up.</b> Each bubble steers itself and keeps its distance from the others. <code>GKAgent2D</code> + <code>GKGoal</code></li>
+          <li><b>A game that notices how you're doing.</b> Playing well makes it faster, struggling makes it chill out. <code>GKRuleSystem</code> (fuzzy logic)</li>
+          <li><b>Knowing if the game is waiting, playing or over.</b> <code>GKStateMachine</code></li>
+          <li><b>Fair shuffling.</b> Colours take turns instead of repeating, and bubble sizes cluster around "medium". <code>GKShuffledDistribution</code>, <code>GKGaussianDistribution</code></li>
+          <li><b>Same daily puzzle for everyone.</b> A "seed" number deals the same Sock Match deck to all players that day. <code>GKMersenneTwisterRandomSource</code></li>
+          <li><b>Lego-style game objects.</b> A bubble is an empty shell with pieces clipped on: looks, movement, score. <code>GKEntity</code> + <code>GKComponentSystem</code></li>
+        </ul>
+      </article>
+
+      <article class="sticker fw">
+        <span class="fw-tag">Getting there</span>
+        <h3>MapKit &amp; Core Location</h3>
+        <p class="plain">Works out how long it takes you to reach the laundromat, so you know when to leave.</p>
+        <ul>
+          <li><b>Finds laundromats near you</b> and estimates the trip by car, on foot or public transport. <code>MKLocalSearch</code>, <code>MKDirections</code></li>
+          <li><b>Asks where you are once</b>, not constantly tracking you. <code>CLLocationManager</code></li>
+        </ul>
+      </article>
+
+      <article class="sticker fw">
+        <span class="fw-tag">Reminders</span>
+        <h3>UserNotifications</h3>
+        <p class="plain">A nudge on your phone that says "time to leave" before your booking starts. Recalculating replaces it, and cancelling removes it.</p>
+        <ul>
+          <li><b>Local notifications</b> scheduled on the device, so no server is needed. <code>UNUserNotificationCenter</code></li>
+        </ul>
+      </article>
+
+      <article class="sticker fw">
+        <span class="fw-tag">Architecture</span>
+        <h3>VIPER &amp; protocols</h3>
+        <p class="plain">Every screen is split into small jobs: one part draws, one decides, one fetches, one moves you to the next screen. The app also talks to a "booking desk" through a contract, so the fake desk on your phone can be swapped for the real one without touching a single screen.</p>
+        <ul>
+          <li><b>VIPER:</b> View, Interactor, Presenter, Entity, Router</li>
+          <li><b>Protocol-oriented services:</b> <code>BookingService</code>, <code>PaymentService</code>, <code>AuthService</code> with a local and a Supabase version</li>
+          <li><b>Dependency injection:</b> tests can plug in stand-ins</li>
+        </ul>
+      </article>
+
+      <article class="sticker fw">
+        <span class="fw-tag">Backend</span>
+        <h3>Supabase &amp; Postgres</h3>
+        <p class="plain">The online database and the "rulebook". The rules live <em>inside</em> the database, so nobody can skip them, not even by changing their phone's clock.</p>
+        <ul>
+          <li><b>Row-level security (RLS):</b> you can only see your own bookings, like a locker that only opens for you.</li>
+          <li><b>Database functions (RPC):</b> <code>book_machine</code>, <code>cancel_booking</code>, <code>check_in</code> do all the booking and use the server's clock.</li>
+          <li><b>No double booking:</b> a constraint makes the database refuse two reservations on one machine at the same time, even if two people tap together.</li>
+          <li><b>Triggers:</b> sign up and a profile is created automatically.</li>
+          <li><b><code>pg_cron</code>:</b> a clock that ticks every minute to expire old holds and free machines.</li>
+          <li><b>Rules as data:</b> numbers like the 10 minute window sit in a table, so they can change without a new app release.</li>
+        </ul>
+      </article>
+
+      <article class="sticker fw">
+        <span class="fw-tag">Accounts</span>
+        <h3>Supabase Auth &amp; Keychain</h3>
+        <p class="plain">Sign in without the app ever storing your password. The sign-in tokens live in the phone's safe.</p>
+        <ul>
+          <li><b>Keychain</b> holds the access and refresh tokens, never <code>UserDefaults</code>.</li>
+          <li><b>Plain <code>URLSession</code></b> calls Supabase, with no extra package to install.</li>
+          <li><b>Opt-in live mode:</b> off by default, so the sample app still runs on its own.</li>
+        </ul>
+      </article>
+
+      <article class="sticker fw">
+        <span class="fw-tag">Safety net</span>
+        <h3>Automated tests</h3>
+        <p class="plain">Little robots that try to break the rules every time the code changes.</p>
+        <ul>
+          <li><b>Swift unit tests</b> for the booking rules (expiry, overlaps, limits).</li>
+          <li><b>32 SQL tests</b> run on a throwaway Postgres, checking the rules, time passing and security.</li>
+        </ul>
+      </article>
+    </div>
+
     <div class="chips">
+      <span class="chip">Swift</span>
       <span class="chip">UIKit</span>
-      <span class="chip">VIPER</span>
       <span class="chip">GameplayKit</span>
       <span class="chip">MapKit</span>
       <span class="chip">Core Location</span>
       <span class="chip">UserNotifications</span>
+      <span class="chip">Keychain</span>
       <span class="chip">Supabase</span>
       <span class="chip">Postgres + RLS</span>
+      <span class="chip">pg_cron</span>
       <span class="chip">iOS 26</span>
-    </div>
-    <div class="two">
-      <div class="sticker">
-        <h3>📱 Frontend</h3>
-        <ul>
-          <li>Screens talk to a <code>BookingService</code> protocol, so a server can replace <code>LocalBookingService</code> without touching a screen</li>
-          <li>Unit tests for the booking rules</li>
-          <li>Games built on state machines, entities, agents, a rule system and seeded randomness</li>
-        </ul>
-      </div>
-      <div class="sticker">
-        <h3>🗄️ Backend</h3>
-        <ul>
-          <li>Postgres on Supabase with row-level security on every table</li>
-          <li>Booking rules are database functions, using the server's clock</li>
-          <li>A constraint makes double booking impossible</li>
-          <li>32 automated tests of the rules and security</li>
-        </ul>
-      </div>
     </div>
     <pre><code>git clone https://github.com/khansharkhamnida/wishywashy.git
 open wishywashy/ios/wishywashy.xcodeproj   # pick an iPhone simulator, press Run</code></pre>
