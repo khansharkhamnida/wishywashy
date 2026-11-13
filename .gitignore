@@ -6,3 +6,17 @@ xcuserdata/
 .swiftpm/
 *.xcworkspace/xcshareddata/swiftpm/
 node_modules/
+
+# Secrets and local tooling
+.env
+.env.*
+backend/supabase/.temp/
+backend/supabase/.branches/
+
+# Private business plan, AI instructions and research (never pushed)
+private/
+docs/research/
+
+# Local scratch notes
+.scratch/
+.lgscratch.txt
